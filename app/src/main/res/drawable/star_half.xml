@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android">
+    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 14.54V8.96L13.026 11.378L15.654 11.6L13.662 13.334L14.256 15.902L12 14.54ZM18 10.844L13.686 10.478L12 6.5L10.314 10.478L6 10.844L9.27 13.682L8.292 17.9L12 15.662L15.708 17.9L14.724 13.682L18 10.844Z" fill="#979797"/>
+    </svg>
+</vector>

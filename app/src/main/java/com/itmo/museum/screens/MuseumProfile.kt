@@ -26,7 +26,7 @@ fun MuseumProfile(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { museum.name }
+                    title = { Text(museum.name) }
                 )
             },
         ) {

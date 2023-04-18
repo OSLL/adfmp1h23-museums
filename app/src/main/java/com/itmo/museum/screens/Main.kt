@@ -20,8 +20,11 @@ fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomBar(navController = navController) }
-    ) {
-        NavGraph(navController = navController)
+    ) { innerPadding ->
+        NavGraph(
+            innerPadding = innerPadding,
+            navController = navController
+        )
     }
 }
 

@@ -1,6 +1,9 @@
 package com.itmo.museum.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,8 +15,12 @@ import com.itmo.museum.screens.MuseumsScreen
 import com.itmo.museum.screens.VisitedScreen
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(
+    innerPadding: PaddingValues,
+    navController: NavHostController,
+) {
     NavHost(
+        modifier = Modifier.padding(innerPadding),
         navController = navController,
         startDestination = BottomBarScreen.Museums.route
     ) {

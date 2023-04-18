@@ -9,10 +9,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.itmo.museum.data.MuseumDataProvider
+import com.itmo.museum.elements.RouteScreen
 import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.screens.MuseumProfile
 import com.itmo.museum.screens.MuseumsScreen
 import com.itmo.museum.screens.VisitedScreen
+import com.itmo.museum.util.routePage
 
 @Composable
 fun NavGraph(
@@ -36,8 +38,11 @@ fun NavGraph(
             composable(route = museum.name) {
                 MuseumProfile(
                     museum = museum,
-                    onRouteClicked = { TODO() }
+                    onRouteClicked = { navController.navigate(museum.routePage) }
                 )
+            }
+            composable(route = museum.routePage) {
+                RouteScreen(targetMuseum = museum)
             }
         }
     }

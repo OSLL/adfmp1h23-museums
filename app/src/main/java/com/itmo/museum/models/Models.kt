@@ -9,6 +9,22 @@ data class Museum(
     val name: String,
     val address: String,
     val info: String,
-    val picture: Int,
-    val rating: Rating
+    val imageId: Int,
+    val reviews: List<UserReview> = emptyList()
+) {
+    val rating: Rating by lazy {
+        val average = reviews.map { it.rating }.average()
+        Rating(reviews.size, average)
+    }
+}
+
+data class User(
+    val name: String,
+    val profilePictureId: Int,
+)
+
+data class UserReview(
+    val user: User,
+    val rating: Short,
+    val text: String,
 )

@@ -18,7 +18,6 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 private val defaultRating = Rating(1200, 3.96)
-private val defaultMuseum = Museum("Эрмитаж", "Дворцовая площадь", "Инфа", R.drawable.ic_launcher_foreground, defaultRating)
 
 @Preview
 @Composable

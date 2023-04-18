@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.itmo.museum.navigation.BottomBarScreen
-import com.itmo.museum.navigation.BottomNavGraph
+import com.itmo.museum.navigation.NavGraph
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -21,7 +21,7 @@ fun MainScreen() {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) }
     ) {
-        BottomNavGraph(navController = navController)
+        NavGraph(navController = navController)
     }
 }
 

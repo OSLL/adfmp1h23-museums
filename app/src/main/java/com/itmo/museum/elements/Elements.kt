@@ -43,14 +43,17 @@ fun RatingBar(rating: Rating = defaultRating) {
 
 @Preview
 @Composable
-fun MuseumIndexCard(museum: Museum = defaultMuseum) {
+fun MuseumIndexCard(
+    modifier: Modifier = Modifier,
+    museum: Museum = defaultMuseum
+) {
     MuseumTheme {
-        Surface {
+        Surface(modifier = modifier) {
             Column(modifier = Modifier
                 .padding(all = 8.dp)
                 ) {
                 Image(
-                    painter = painterResource(id = museum.picture),
+                    painter = painterResource(id = museum.imageId),
                     contentDescription = "Museum profile picture",
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
@@ -64,13 +67,5 @@ fun MuseumIndexCard(museum: Museum = defaultMuseum) {
                 Text(text = museum.info)
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun MuseumBigCard(museum: Museum = defaultMuseum) {
-    MuseumTheme {
-
     }
 }

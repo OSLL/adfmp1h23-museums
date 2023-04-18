@@ -20,6 +20,7 @@ import com.itmo.museum.util.routePage
 fun NavGraph(
     innerPadding: PaddingValues,
     navController: NavHostController,
+    viewModel: AppViewModel = viewModel()
 ) {
     NavHost(
         modifier = Modifier.padding(innerPadding),
@@ -32,7 +33,7 @@ fun NavGraph(
             )
         }
         composable(route = BottomBarScreen.Visited.route) {
-            VisitedScreen()
+            VisitedScreen(viewModel)
         }
         MuseumDataProvider.defaultProvider.museums.forEach { museum ->
             composable(route = museum.name) {

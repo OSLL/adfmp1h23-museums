@@ -18,6 +18,7 @@ import com.itmo.museum.ui.theme.MuseumTheme
 @Preview
 fun RouteScreen(
     onBackClicked: () -> Unit = {},
+    onAboutClicked: () -> Unit = {},
     targetMuseum: Museum = defaultMuseum
 ) {
     val mapProperties = MapProperties(
@@ -26,7 +27,13 @@ fun RouteScreen(
     val cameraPositionState = rememberCameraPositionState()
     MuseumTheme {
         Scaffold(
-            topBar = { MuseumAppTopBar(titleText = "Route to ${targetMuseum.name}", onBackClicked = onBackClicked) }
+            topBar = {
+                MuseumAppTopBar(
+                    titleText = "Route to ${targetMuseum.name}",
+                    onBackClicked = onBackClicked,
+                    onAboutClicked = onAboutClicked
+                )
+            }
         ) { innerPadding ->
             GoogleMap(
                 modifier = Modifier

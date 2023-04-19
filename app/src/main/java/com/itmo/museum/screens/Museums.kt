@@ -21,11 +21,16 @@ import com.itmo.museum.models.Museum
 @Preview
 fun MuseumsScreen(
     onBackClicked: () -> Unit = {},
+    onAboutClicked: () -> Unit = {},
     onMuseumClicked: (museum: String) -> Unit = {}
 ) {
     Scaffold(
         topBar = {
-            MuseumAppTopBar(titleText = "Museums", onBackClicked = onBackClicked)
+            MuseumAppTopBar(
+                titleText = "Museums",
+                onBackClicked = onBackClicked,
+                onAboutClicked = onAboutClicked
+            )
         }
     ) { innerPadding ->
         Box(

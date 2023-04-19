@@ -19,12 +19,19 @@ import com.itmo.museum.models.AppViewModel
 @Composable
 fun VisitedScreen(
     onBackClicked: () -> Unit = {},
+    onAboutClicked: () -> Unit = {},
     viewModel: AppViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
-        topBar = { MuseumAppTopBar(titleText = "Visited", onBackClicked = onBackClicked) }
+        topBar = {
+            MuseumAppTopBar(
+                titleText = "Visited",
+                onBackClicked = onBackClicked,
+                onAboutClicked = onAboutClicked
+            )
+        }
     ) { innerPadding ->
         Box(
             modifier = Modifier

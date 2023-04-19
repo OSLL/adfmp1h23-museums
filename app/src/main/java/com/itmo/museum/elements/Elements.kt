@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -74,7 +75,8 @@ fun MuseumIndexCard(
 @Composable
 fun MuseumAppTopBar(
     titleText: String,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    onAboutClicked: () -> Unit
 ) {
     TopAppBar(
         title = { Text(text = titleText) },
@@ -83,6 +85,14 @@ fun MuseumAppTopBar(
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "Back"
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = onAboutClicked) {
+                Icon(
+                    imageVector = Icons.Filled.Info,
+                    contentDescription = "About"
                 )
             }
         }

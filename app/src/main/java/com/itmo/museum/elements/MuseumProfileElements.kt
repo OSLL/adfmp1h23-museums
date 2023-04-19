@@ -77,7 +77,7 @@ fun MuseumInfo(museum: Museum) {
 @Composable
 fun ReviewList(reviews: List<UserReview>) {
     Text(
-        text = "Reviews",
+        text = "${reviews.size} reviews",
         fontSize = MaterialTheme.typography.h5.fontSize,
         fontWeight = FontWeight.Bold,
         color = Color.Black,

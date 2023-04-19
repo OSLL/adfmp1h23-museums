@@ -11,7 +11,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.itmo.museum.navigation.BottomBarScreen
+import com.itmo.museum.navigation.MuseumAppScreen
 import com.itmo.museum.navigation.NavGraph
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -31,8 +31,8 @@ fun MainScreen() {
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        BottomBarScreen.Museums,
-        BottomBarScreen.Visited,
+        MuseumAppScreen.BottomBarScreen.Museums,
+        MuseumAppScreen.BottomBarScreen.Visited,
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -51,7 +51,7 @@ fun BottomBar(navController: NavHostController) {
 
 @Composable
 fun RowScope.AddItem(
-    screen: BottomBarScreen,
+    screen: MuseumAppScreen.BottomBarScreen,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {

@@ -25,25 +25,33 @@ fun NavGraph(
     NavHost(
         modifier = Modifier.padding(innerPadding),
         navController = navController,
-        startDestination = BottomBarScreen.Museums.route
+        startDestination = MuseumAppScreen.BottomBarScreen.Museums.route
     ) {
-        composable(route = BottomBarScreen.Museums.route) {
+        composable(route = MuseumAppScreen.BottomBarScreen.Museums.route) {
             MuseumsScreen(
+                onBackClicked = navController::navigateUp,
                 onMuseumClicked = { museum -> navController.navigate(museum) }
             )
         }
-        composable(route = BottomBarScreen.Visited.route) {
-            VisitedScreen(viewModel)
+        composable(route = MuseumAppScreen.BottomBarScreen.Visited.route) {
+            VisitedScreen(
+                onBackClicked = navController::navigateUp,
+                viewModel = viewModel
+            )
         }
         MuseumDataProvider.defaultProvider.museums.forEach { museum ->
-            composable(route = museum.name) {
+            composable(route = MuseumAppScreen.MuseumProfile(museum).route) {
                 MuseumProfile(
                     museum = museum,
+                    onBackClicked = navController::navigateUp,
                     onRouteClicked = { navController.navigate(museum.routePage) }
                 )
             }
-            composable(route = museum.routePage) {
-                RouteScreen(targetMuseum = museum)
+            composable(route = MuseumAppScreen.Route(museum).route) {
+                RouteScreen(
+                    onBackClicked = navController::navigateUp,
+                    targetMuseum = museum
+                )
             }
         }
     }

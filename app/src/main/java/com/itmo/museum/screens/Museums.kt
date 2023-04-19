@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,26 +13,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.itmo.museum.data.MuseumDataProvider
+import com.itmo.museum.elements.MuseumAppTopBar
 import com.itmo.museum.elements.MuseumIndexCard
 import com.itmo.museum.models.Museum
 
 @Composable
 @Preview
 fun MuseumsScreen(
+    onBackClicked: () -> Unit = {},
     onMuseumClicked: (museum: String) -> Unit = {}
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = ScrollState(0))
-            .background(Color.Magenta),
-        contentAlignment = Alignment.Center
-    ) {
-        MuseumCardList(
-            modifier = Modifier,
-            onMuseumClicked = onMuseumClicked,
-            museums = MuseumDataProvider.defaultProvider.museums
-        )
+    Scaffold(
+        topBar = {
+            MuseumAppTopBar(titleText = "Museums", onBackClicked = onBackClicked)
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .verticalScroll(state = ScrollState(0))
+                .background(Color.Magenta),
+            contentAlignment = Alignment.Center
+        ) {
+            MuseumCardList(
+                modifier = Modifier,
+                onMuseumClicked = onMuseumClicked,
+                museums = MuseumDataProvider.defaultProvider.museums
+            )
+        }
     }
 }
 

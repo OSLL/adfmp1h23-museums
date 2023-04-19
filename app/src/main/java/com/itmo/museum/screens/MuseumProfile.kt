@@ -20,13 +20,15 @@ import com.itmo.museum.ui.theme.MuseumTheme
 @Composable
 fun MuseumProfile(
     museum: Museum = defaultMuseum,
+    onBackClicked: () -> Unit = {},
     onRouteClicked: () -> Unit = {}
 ) {
     MuseumTheme {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { Text(museum.name) }
+                MuseumAppTopBar(
+                    titleText = museum.name,
+                    onBackClicked = onBackClicked
                 )
             },
         ) {

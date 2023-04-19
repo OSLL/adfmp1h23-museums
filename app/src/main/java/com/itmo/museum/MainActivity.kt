@@ -30,17 +30,15 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-    private fun askPermissions() = when (PackageManager.PERMISSION_GRANTED) {
-        ContextCompat.checkSelfPermission(
-            this,
-            ACCESS_FINE_LOCATION
-        ) -> {
-            viewModel.getDeviceLocation(fusedLocationProviderClient)
+    private fun askPermissions() =
+        when (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION)) {
+            PackageManager.PERMISSION_GRANTED -> {
+                viewModel.getDeviceLocation(fusedLocationProviderClient)
+            }
+            else -> {
+                requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
+            }
         }
-        else -> {
-            requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

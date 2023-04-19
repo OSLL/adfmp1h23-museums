@@ -35,9 +35,7 @@ fun VisitedScreen(viewModel: AppViewModel) {
             )
         } else {
             visitedMuseums.forEach { museum ->
-                MuseumIndexCard(
-                    museum = TODO("get museum by name")
-                )
+                MuseumIndexCard(museum = museum)
             }
         }
     }

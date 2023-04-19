@@ -23,7 +23,7 @@ class AppViewModel : ViewModel() {
     fun addVisitedMuseum(museum: Museum) {
         _uiState.update { currentState ->
             currentState.copy(
-                visitedMuseums = currentState.visitedMuseums.add(museum.name)
+                visitedMuseums = currentState.visitedMuseums.add(museum)
             )
         }
     }
@@ -48,5 +48,5 @@ class AppViewModel : ViewModel() {
 
 data class AppUiState(
     val lastKnownLocation: Location?,
-    val visitedMuseums: PersistentList<String>
+    val visitedMuseums: PersistentList<Museum>
 )

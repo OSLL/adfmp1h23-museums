@@ -19,7 +19,7 @@ interface MuseumDataProvider {
 private class MuseumDataRegularProvider : MuseumDataProvider {
     override val museums: List<Museum>
         // TODO: use multiple different museums
-        get() = listOf(HERMITAGE, HERMITAGE, HERMITAGE)
+        get() = List(10) { HERMITAGE }
 
     private companion object {
         // TODO: define multiple actual museums

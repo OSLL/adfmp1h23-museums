@@ -51,7 +51,7 @@ fun MuseumIndexCard(
         Surface(modifier = modifier) {
             Column(modifier = Modifier
                 .padding(all = 8.dp)
-                ) {
+            ) {
                 Image(
                     painter = painterResource(id = museum.imageId),
                     contentDescription = "Museum profile picture",
@@ -64,7 +64,7 @@ fun MuseumIndexCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = museum.address)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = museum.info)
+                Text(text = museum.info, maxLines = 5)
             }
         }
     }

@@ -14,11 +14,24 @@ import kotlinx.coroutines.flow.update
 class AppViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         AppUiState(
+            user = null,
             lastKnownLocation = null,
             visitedMuseums = persistentSetOf()
         )
     )
     val uiState: StateFlow<AppUiState> = _uiState.asStateFlow()
+
+    fun setUser(user: User) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                user = user
+            )
+        }
+    }
+
+    fun setAnonymousUser() {
+        setUser(User.Anonymous)
+    }
 
     fun addVisitedMuseum(museum: Museum) {
         _uiState.update { currentState ->
@@ -47,6 +60,7 @@ class AppViewModel : ViewModel() {
 }
 
 data class AppUiState(
+    val user: User?,
     val lastKnownLocation: Location?,
     val visitedMuseums: PersistentSet<Museum>
 )

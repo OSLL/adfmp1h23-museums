@@ -1,6 +1,5 @@
 package com.itmo.museum.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
@@ -8,17 +7,15 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.itmo.museum.elements.*
 import com.itmo.museum.elements.defaultMuseum
 import com.itmo.museum.models.Museum
 import com.itmo.museum.ui.theme.MuseumTheme
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
 @Composable
 fun MuseumProfile(
+    navController: NavHostController,
     museum: Museum = defaultMuseum,
     onBackClicked: () -> Unit = {},
     onRouteClicked: () -> Unit = {},
@@ -32,10 +29,11 @@ fun MuseumProfile(
                     onBackClicked = onBackClicked,
                 )
             },
-        ) {
+            bottomBar = { BottomBar(navController = navController) }
+        ) { innerPadding ->
             Column(
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(innerPadding)
                     .verticalScroll(state = ScrollState(0)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

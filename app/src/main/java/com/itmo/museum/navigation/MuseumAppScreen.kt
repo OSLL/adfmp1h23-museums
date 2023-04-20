@@ -43,4 +43,9 @@ sealed class MuseumAppScreen(
         route = museum.routePage,
         title = "Route to ${museum.name}"
     )
+
+    object Greeting : MuseumAppScreen(
+        route = "greeting",
+        title = "Greeting"
+    )
 }

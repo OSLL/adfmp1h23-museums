@@ -1,5 +1,7 @@
 package com.itmo.museum.models
 
+import com.itmo.museum.R
+
 data class Rating(
     val count: Int,
     val average: Double
@@ -21,7 +23,14 @@ data class Museum(
 data class User(
     val name: String,
     val profilePictureId: Int,
-)
+) {
+    companion object {
+        val Anonymous = User(
+            name = "Anonymous",
+            profilePictureId = R.drawable.default_user,
+        )
+    }
+}
 
 data class UserReview(
     val user: User,

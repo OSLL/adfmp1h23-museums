@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 @ExperimentalComposeUiApi
 @Composable
 fun SearchBarUI(
+    modifier: Modifier = Modifier,
     searchText: String,
     placeholderText: String = "",
     onSearchTextChanged: (String) -> Unit = {},
@@ -36,7 +37,7 @@ fun SearchBarUI(
 ) {
     Box {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
         ) {
             SearchBar(
@@ -121,8 +122,8 @@ fun SearchBar(
 
                     }
                 },
-                maxLines = 1,
                 singleLine = true,
+                maxLines = 1,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = {
                     keyboardController?.hide()

@@ -4,14 +4,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.itmo.museum.elements.MuseumAppTopBar
 import com.itmo.museum.ui.theme.MuseumTheme
 
-@Preview
 @Composable
 fun AboutScreen(
+    navController: NavHostController,
     onBackClicked: () -> Unit = {},
 ) {
     MuseumTheme {
@@ -21,7 +21,8 @@ fun AboutScreen(
                     titleText = "Museums App",
                     onBackClicked = onBackClicked,
                 )
-            }
+            },
+            bottomBar = { BottomBar(navController = navController) }
         ) { innerPadding ->
             Column(
                 modifier = Modifier

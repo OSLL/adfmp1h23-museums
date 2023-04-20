@@ -18,14 +18,9 @@ import com.itmo.museum.navigation.NavGraph
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
-    ) { innerPadding ->
-        NavGraph(
-            innerPadding = innerPadding,
-            navController = navController
-        )
-    }
+    NavGraph(
+        navController = navController
+    )
 }
 
 @Composable

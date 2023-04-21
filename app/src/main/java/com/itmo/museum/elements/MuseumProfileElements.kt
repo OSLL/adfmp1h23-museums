@@ -1,5 +1,6 @@
 package com.itmo.museum.elements
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,6 +37,19 @@ internal fun MuseumCard(
     museum: Museum = defaultMuseum,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+
+    fun shareMuseumInfo() {
+        val message = "Check out the ${museum.name} at ${museum.address}"
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, message)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+
+        context.startActivity(shareIntent)
+    }
 
     BoxWithShadow {
         Column(
@@ -53,7 +68,29 @@ internal fun MuseumCard(
                 color = Color.Black,
                 modifier = Modifier
             )
-            FixedRatingBar(rating = uiState.getRatingOf(museum))
+            Text(
+                text = museum.address,
+                fontSize = MaterialTheme.typography.body2.fontSize,
+                modifier = Modifier
+            )
+            Row {
+                FixedRatingBar(
+                    modifier = Modifier.weight(1f),
+                    rating = uiState.getRatingOf(museum)
+                )
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(10.dp),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    Button(
+                        onClick = ::shareMuseumInfo,
+                    ) {
+                        Text("Share")
+                    }
+                }
+            }
         }
     }
 }

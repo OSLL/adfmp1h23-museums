@@ -3,8 +3,8 @@ package com.itmo.museum.models
 import com.itmo.museum.R
 
 data class Rating(
-    val count: Int,
-    val average: Double
+    val count: Int = 0,
+    val average: Float = 0f
 )
 
 data class Museum(
@@ -13,12 +13,7 @@ data class Museum(
     val info: String,
     val imageId: Int,
     val reviews: List<UserReview> = emptyList()
-) {
-    val rating: Rating by lazy {
-        val average = reviews.map { it.rating }.average()
-        Rating(reviews.size, average)
-    }
-}
+)
 
 data class User(
     val name: String,
@@ -34,6 +29,6 @@ data class User(
 
 data class UserReview(
     val user: User,
-    val rating: Short,
+    val rating: Float,
     val text: String,
 )

@@ -5,22 +5,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.itmo.museum.R
-import com.itmo.museum.models.Museum
-import com.itmo.museum.models.Rating
-import com.itmo.museum.models.User
-import com.itmo.museum.models.UserReview
+import com.itmo.museum.models.*
+import com.itmo.museum.util.getRatingOf
 import com.itmo.museum.util.shadow
 
 // TODO: remove later, this is just a placeholder
@@ -28,17 +23,19 @@ internal val placeholderText =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 internal val defaultUser = User(name = "John Johns", profilePictureId = R.drawable.default_user)
 internal val defaultReview =
-    UserReview(user = defaultUser, rating = 4, text = placeholderText.take(100))
+    UserReview(user = defaultUser, rating = 4f, text = placeholderText.take(100))
 internal val defaultReviews = List(5) { defaultReview }
 
 internal val defaultMuseum =
     Museum("Эрмитаж", "Дворцовая площадь", placeholderText, R.drawable.hermitage, defaultReviews)
 
 @Composable
-@Preview
 internal fun MuseumCard(
+    viewModel: AppViewModel,
     museum: Museum = defaultMuseum,
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     BoxWithShadow {
         Column(
             modifier = Modifier.padding(all = 10.dp)
@@ -50,13 +47,13 @@ internal fun MuseumCard(
                     .fillMaxWidth()
             )
             Text(
-                text = "ЭРМИТАЖ",
+                text = museum.name,
                 fontSize = MaterialTheme.typography.body1.fontSize,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier
             )
-            RatingBar(rating = museum.rating)
+            FixedRatingBar(rating = uiState.getRatingOf(museum))
         }
     }
 }
@@ -73,7 +70,10 @@ fun MuseumInfo(museum: Museum) {
 }
 
 @Composable
-fun ReviewList(reviews: List<UserReview>) {
+fun ReviewList(
+    onAddReviewClick: () -> Unit = {},
+    reviews: List<UserReview>
+) {
     Text(
         text = "${reviews.size} reviews",
         fontSize = MaterialTheme.typography.h5.fontSize,
@@ -81,7 +81,10 @@ fun ReviewList(reviews: List<UserReview>) {
         color = Color.Black,
         modifier = Modifier.padding(10.dp)
     )
-
+    WideButton(
+        text = "Add review",
+        onClick = onAddReviewClick
+    )
     Column(modifier = Modifier) {
         reviews.forEach {
             Review(
@@ -119,7 +122,7 @@ fun Review(review: UserReview, modifier: Modifier) {
                 )
             }
 
-            RatingBar(rating = Rating(1, review.rating.toDouble()))
+            FixedRatingBar(rating = Rating(1, review.rating))
 
             Text(
                 text = review.text,
@@ -133,7 +136,8 @@ fun Review(review: UserReview, modifier: Modifier) {
 }
 
 @Composable
-fun RouteButton(
+fun WideButton(
+    text: String,
     onClick: () -> Unit = {}
 ) {
     Button(
@@ -144,10 +148,9 @@ fun RouteButton(
             .padding(20.dp)
     ) {
         Text(
-            text = "Route",
+            text = text,
             fontSize = MaterialTheme.typography.h6.fontSize,
             fontWeight = FontWeight.Light,
-            color = Color.White,
             modifier = Modifier
         )
     }

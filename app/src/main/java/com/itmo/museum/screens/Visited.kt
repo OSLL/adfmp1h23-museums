@@ -59,6 +59,7 @@ private fun VisitedScreenContent(
             NoMuseumsVisited()
         } else {
             VisitedMuseumsList(
+                viewModel = viewModel,
                 visitedMuseums = visitedMuseums,
                 onMuseumClick = onMuseumClick
             )
@@ -78,6 +79,7 @@ private fun NoMuseumsVisited() {
 
 @Composable
 private fun VisitedMuseumsList(
+    viewModel: AppViewModel,
     visitedMuseums: List<Museum>,
     onMuseumClick: (String) -> Unit = {}
 ) {
@@ -86,6 +88,7 @@ private fun VisitedMuseumsList(
             modifier = Modifier.fillMaxSize()
         ) {
             MuseumCardList(
+                viewModel = viewModel,
                 onMuseumClick = onMuseumClick,
                 backgroundColor = Color.Blue,
                 museums = visitedMuseums

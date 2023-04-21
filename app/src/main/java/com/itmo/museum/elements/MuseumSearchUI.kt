@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.models.MuseumSearchModelState
 import com.itmo.museum.models.MuseumSearchViewModel
 import com.itmo.museum.screens.BottomBar
@@ -18,6 +19,7 @@ import com.itmo.museum.util.rememberFlowWithLifecycle
 @Composable
 fun MuseumSearchUI(
     navController: NavHostController,
+    viewModel: AppViewModel,
     museumSearchViewModel: MuseumSearchViewModel,
     onSearchTextChanged: (String) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -39,6 +41,7 @@ Scaffold(
             matchesFound = museumSearchModelState.museums.isNotEmpty()
         ) {
             MuseumCardList(
+                viewModel = viewModel,
                 museums = museumSearchModelState.museums,
                 onMuseumClick = onMuseumClick
             )

@@ -11,17 +11,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.itmo.museum.R
-import com.itmo.museum.data.MuseumDataProvider
+import com.itmo.museum.elements.AddReview
 import com.itmo.museum.elements.MuseumSearchUI
 import com.itmo.museum.elements.RouteScreen
 import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.models.MuseumSearchViewModel
 import com.itmo.museum.models.User
+import com.itmo.museum.models.UserReview
 import com.itmo.museum.screens.AboutScreen
 import com.itmo.museum.screens.GreetingScreen
 import com.itmo.museum.screens.MuseumProfile
 import com.itmo.museum.screens.VisitedScreen
-import com.itmo.museum.util.routePage
 
 @ExperimentalComposeUiApi
 @Composable
@@ -66,6 +66,7 @@ fun NavGraph(
             val museumSearchViewModel = hiltViewModel<MuseumSearchViewModel>()
             MuseumSearchUI(
                 navController = navController,
+                viewModel = viewModel,
                 museumSearchViewModel = museumSearchViewModel,
                 onSearchTextChanged = { museumSearchViewModel.onSearchTextChanged(it) },
                 onBackClick = ::onBackClick,
@@ -87,14 +88,16 @@ fun NavGraph(
                 onBackClicked = ::onBackClick,
             )
         }
-        MuseumDataProvider.defaultProvider.museums.forEach { museum ->
+        uiState.museums.forEach { museum ->
             composable(route = MuseumAppScreen.MuseumProfile(museum).route) {
                 MuseumProfile(
                     navController = navController,
+                    viewModel = viewModel,
                     museum = museum,
                     onBackClicked = ::onBackClick,
-                    onRouteClicked = { navController.navigate(museum.routePage) },
-                    onVisitedClick = { museum -> viewModel.addVisitedMuseum(museum) }
+                    onRouteClicked = { navController.navigate(MuseumAppScreen.Route(museum).route) },
+                    onVisitedClick = { museum -> viewModel.addVisitedMuseum(museum) },
+                    onAddReviewClick = { navController.navigate(MuseumAppScreen.AddReview(museum).route) },
                 )
             }
             composable(route = MuseumAppScreen.Route(museum).route) {
@@ -102,6 +105,21 @@ fun NavGraph(
                     navController = navController,
                     onBackClicked = ::onBackClick,
                     targetMuseum = museum
+                )
+            }
+            composable(route = MuseumAppScreen.AddReview(museum).route) {
+                AddReview(
+                    navController = navController,
+                    onBackClicked = ::onBackClick,
+                    onPostReview = { rating, reviewText ->
+                        val review = UserReview(
+                            user = uiState.user ?: User.Anonymous,
+                            rating = rating,
+                            text = reviewText
+                        )
+                        viewModel.addReviewFor(museum, review)
+                        onBackClick()
+                    }
                 )
             }
         }

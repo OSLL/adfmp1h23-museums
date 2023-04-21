@@ -7,16 +7,16 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.itmo.museum.data.MuseumDataProvider
 import com.itmo.museum.elements.MuseumIndexCard
+import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.models.Museum
 
-@Preview
 @Composable
 fun MuseumCardList(
     modifier: Modifier = Modifier,
+    viewModel: AppViewModel,
     backgroundColor: Color = Color.LightGray,
     onMuseumClick: (museum: String) -> Unit = {},
     museums: List<Museum> = MuseumDataProvider.defaultProvider.museums,
@@ -31,12 +31,21 @@ fun MuseumCardList(
             if (chunk.size == 2) {
                 val (left, right) = chunk
                 Row(modifier = Modifier) {
-                    RowMuseumIndexCard(onMuseumClick = onMuseumClick, museum = left)
-                    RowMuseumIndexCard(onMuseumClick = onMuseumClick, museum = right)
+                    RowMuseumIndexCard(
+                        viewModel = viewModel,
+                        onMuseumClick = onMuseumClick,
+                        museum = left
+                    )
+                    RowMuseumIndexCard(
+                        viewModel = viewModel,
+                        onMuseumClick = onMuseumClick,
+                        museum = right
+                    )
                 }
             } else {
                 Row(modifier = Modifier) {
                     RowMuseumIndexCard(
+                        viewModel = viewModel,
                         onMuseumClick = onMuseumClick,
                         weight = 1.0f,
                         museum = chunk.first()
@@ -50,6 +59,7 @@ fun MuseumCardList(
 
 @Composable
 private fun RowScope.RowMuseumIndexCard(
+    viewModel: AppViewModel,
     onMuseumClick: (museum: String) -> Unit = {},
     weight: Float = 1.0f,
     museum: Museum
@@ -58,6 +68,7 @@ private fun RowScope.RowMuseumIndexCard(
         modifier = Modifier
             .weight(weight)
             .padding(2.dp),
+        viewModel = viewModel,
         museum = museum,
         onClick = onMuseumClick
     )

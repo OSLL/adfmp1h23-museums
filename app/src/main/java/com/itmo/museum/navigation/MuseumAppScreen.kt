@@ -48,4 +48,9 @@ sealed class MuseumAppScreen(
         route = "greeting",
         title = "Greeting"
     )
+
+    class AddReview(museum: Museum) : MuseumAppScreen(
+        route = "add-review?museum=${museum.name}",
+        title = "Add review"
+    )
 }

@@ -7,23 +7,27 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.itmo.museum.R
+import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.models.Museum
 import com.itmo.museum.models.Rating
 import com.itmo.museum.ui.theme.MuseumTheme
+import com.itmo.museum.util.getRatingOf
 import kotlin.math.ceil
 import kotlin.math.floor
 
-private val defaultRating = Rating(1200, 3.96)
+private val defaultRating = Rating(1200, 3.96f)
 
 @Preview
 @Composable
-fun RatingBar(
+fun FixedRatingBar(
     modifier: Modifier = Modifier,
     rating: Rating = defaultRating,
 ) {
@@ -46,13 +50,15 @@ fun RatingBar(
     }
 }
 
-@Preview
 @Composable
 fun MuseumIndexCard(
     modifier: Modifier = Modifier,
+    viewModel: AppViewModel,
     museum: Museum = defaultMuseum,
     onClick: (String) -> Unit = {}
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     MuseumTheme {
         Surface(
             modifier = modifier.clickable { onClick(museum.name) }
@@ -68,7 +74,7 @@ fun MuseumIndexCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = museum.name)
                 Spacer(modifier = Modifier.height(4.dp))
-                RatingBar(rating = museum.rating)
+                FixedRatingBar(rating = uiState.getRatingOf(museum))
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = museum.address)
                 Spacer(modifier = Modifier.height(4.dp))

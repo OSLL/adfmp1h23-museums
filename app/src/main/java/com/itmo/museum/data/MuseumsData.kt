@@ -1,7 +1,6 @@
 package com.itmo.museum.data
 
 import com.itmo.museum.R
-import com.itmo.museum.elements.defaultReviews
 import com.itmo.museum.elements.placeholderText
 import com.itmo.museum.models.Museum
 
@@ -28,7 +27,6 @@ private class MuseumDataRegularProvider : MuseumDataProvider {
             address = "Дворцовая площадь",
             info = placeholderText,
             imageId = R.drawable.hermitage,
-            reviews = defaultReviews
         )
     }
 }

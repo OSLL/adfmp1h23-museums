@@ -5,22 +5,30 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.itmo.museum.elements.*
 import com.itmo.museum.elements.defaultMuseum
+import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.models.Museum
 import com.itmo.museum.ui.theme.MuseumTheme
+import com.itmo.museum.util.getReviewsFor
 
 @Composable
 fun MuseumProfile(
     navController: NavHostController,
+    viewModel: AppViewModel,
     museum: Museum = defaultMuseum,
     onBackClicked: () -> Unit = {},
     onRouteClicked: () -> Unit = {},
-    onVisitedClick: (Museum) -> Unit = {}
+    onVisitedClick: (Museum) -> Unit = {},
+    onAddReviewClick: () -> Unit = {},
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     MuseumTheme {
         Scaffold(
             topBar = {
@@ -37,15 +45,21 @@ fun MuseumProfile(
                     .verticalScroll(state = ScrollState(0)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                MuseumCard(museum = museum)
+                MuseumCard(
+                    viewModel = viewModel,
+                    museum = museum
+                )
                 Button(
                     onClick = { onVisitedClick(museum) }
                 ) {
                     Text(text = "Mark as visited")
                 }
                 MuseumInfo(museum = museum)
-                ReviewList(museum.reviews)
-                RouteButton(onClick = onRouteClicked)
+                ReviewList(
+                    onAddReviewClick = onAddReviewClick,
+                    reviews = uiState.getReviewsFor(museum)
+                )
+                WideButton(text = "Route", onClick = onRouteClicked)
             }
         }
     }

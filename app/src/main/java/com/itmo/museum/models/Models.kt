@@ -1,5 +1,6 @@
 package com.itmo.museum.models
 
+import com.google.android.gms.maps.model.LatLng
 import com.itmo.museum.R
 
 data class Rating(
@@ -12,7 +13,8 @@ data class Museum(
     val address: String,
     val info: String,
     val imageId: Int,
-    val reviews: List<UserReview> = emptyList()
+    val reviews: List<UserReview> = emptyList(),
+    val location: LatLng
 )
 
 data class User(

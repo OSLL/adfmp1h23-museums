@@ -1,5 +1,6 @@
 package com.itmo.museum.data
 
+import com.google.android.gms.maps.model.LatLng
 import com.itmo.museum.R
 import com.itmo.museum.elements.placeholderText
 import com.itmo.museum.models.Museum
@@ -27,6 +28,7 @@ private class MuseumDataRegularProvider : MuseumDataProvider {
             address = "Дворцовая площадь",
             info = placeholderText,
             imageId = R.drawable.hermitage,
+            location = LatLng(59.939896, 30.314559)
         )
     }
 }

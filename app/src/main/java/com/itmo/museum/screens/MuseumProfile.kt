@@ -10,8 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.google.android.gms.maps.model.LatLng
 import com.itmo.museum.elements.*
-import com.itmo.museum.elements.defaultMuseum
 import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.models.Museum
 import com.itmo.museum.ui.theme.MuseumTheme
@@ -21,9 +21,9 @@ import com.itmo.museum.util.getReviewsFor
 fun MuseumProfile(
     navController: NavHostController,
     viewModel: AppViewModel,
-    museum: Museum = defaultMuseum,
+    museum: Museum,
     onBackClicked: () -> Unit = {},
-    onRouteClicked: () -> Unit = {},
+    onRouteClicked: (source: LatLng, destination: Museum) -> Unit = { _, _ -> },
     onVisitedClick: (Museum) -> Unit = {},
     onAddReviewClick: () -> Unit = {},
 ) {
@@ -59,7 +59,15 @@ fun MuseumProfile(
                     onAddReviewClick = onAddReviewClick,
                     reviews = uiState.getReviewsFor(museum)
                 )
-                WideButton(text = "Route", onClick = onRouteClicked)
+                WideButton(
+                    text = "Route",
+                    onClick = {
+                        val userLocation = uiState.lastKnownLocation.let {
+                            LatLng(it.latitude, it.longitude)
+                        }
+                        onRouteClicked(userLocation, museum)
+                    }
+                )
             }
         }
     }

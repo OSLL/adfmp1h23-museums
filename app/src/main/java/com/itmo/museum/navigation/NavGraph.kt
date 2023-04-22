@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -13,7 +14,6 @@ import androidx.navigation.compose.composable
 import com.itmo.museum.R
 import com.itmo.museum.elements.AddReview
 import com.itmo.museum.elements.MuseumSearchUI
-import com.itmo.museum.elements.RouteScreen
 import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.models.MuseumSearchViewModel
 import com.itmo.museum.models.User
@@ -22,6 +22,7 @@ import com.itmo.museum.screens.AboutScreen
 import com.itmo.museum.screens.GreetingScreen
 import com.itmo.museum.screens.MuseumProfile
 import com.itmo.museum.screens.VisitedScreen
+import com.itmo.museum.util.drawRoute
 
 @ExperimentalComposeUiApi
 @Composable
@@ -38,6 +39,8 @@ fun NavGraph(
     val startDestination = uiState.user
         ?.let { MuseumAppScreen.BottomBarScreen.Museums }
         ?: MuseumAppScreen.Greeting
+
+    val context = LocalContext.current
 
     NavHost(
         modifier = Modifier,
@@ -95,16 +98,11 @@ fun NavGraph(
                     viewModel = viewModel,
                     museum = museum,
                     onBackClicked = ::onBackClick,
-                    onRouteClicked = { navController.navigate(MuseumAppScreen.Route(museum).route) },
+                    onRouteClicked = { source, destination ->
+                        drawRoute(source, destination, context)
+                    },
                     onVisitedClick = { museum -> viewModel.addVisitedMuseum(museum) },
                     onAddReviewClick = { navController.navigate(MuseumAppScreen.AddReview(museum).route) },
-                )
-            }
-            composable(route = MuseumAppScreen.Route(museum).route) {
-                RouteScreen(
-                    navController = navController,
-                    onBackClicked = ::onBackClick,
-                    targetMuseum = museum
                 )
             }
             composable(route = MuseumAppScreen.AddReview(museum).route) {

@@ -12,7 +12,7 @@ class AppViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         AppUiState(
             user = null,
-            lastKnownLocation = null,
+            lastKnownLocation = HERMITAGE_LOCATION,
             museums = MuseumDataProvider.defaultProvider.museums.toPersistentList(),
             reviews = persistentMapOf(),
             rating = persistentMapOf(),
@@ -71,7 +71,7 @@ class AppViewModel : ViewModel() {
             locationResult.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     _uiState.value = _uiState.value.copy(
-                        lastKnownLocation = task.result,
+                        lastKnownLocation = task.result ?: HERMITAGE_LOCATION,
                     )
                 }
             }
@@ -83,9 +83,14 @@ class AppViewModel : ViewModel() {
 
 data class AppUiState(
     val user: User?,
-    val lastKnownLocation: Location?,
+    val lastKnownLocation: Location,
     val museums: PersistentList<Museum>,
     val reviews: PersistentMap<Museum, PersistentList<UserReview>>,
     val rating: PersistentMap<Museum, Rating>,
     val visitedMuseums: PersistentSet<Museum>
 )
+
+private val HERMITAGE_LOCATION = Location("").apply {
+    latitude = 59.93989616491988
+    longitude = 30.314559697617607
+}

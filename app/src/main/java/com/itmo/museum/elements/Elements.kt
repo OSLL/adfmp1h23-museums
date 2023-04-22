@@ -54,7 +54,7 @@ fun FixedRatingBar(
 fun MuseumIndexCard(
     modifier: Modifier = Modifier,
     viewModel: AppViewModel,
-    museum: Museum = defaultMuseum,
+    museum: Museum,
     onClick: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()

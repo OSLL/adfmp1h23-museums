@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.itmo.museum.R
 import com.itmo.museum.models.*
 import com.itmo.museum.util.getRatingOf
 import com.itmo.museum.util.shadow
@@ -23,18 +22,11 @@ import com.itmo.museum.util.shadow
 // TODO: remove later, this is just a placeholder
 internal val placeholderText =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-internal val defaultUser = User(name = "John Johns", profilePictureId = R.drawable.default_user)
-internal val defaultReview =
-    UserReview(user = defaultUser, rating = 4f, text = placeholderText.take(100))
-internal val defaultReviews = List(5) { defaultReview }
-
-internal val defaultMuseum =
-    Museum("Эрмитаж", "Дворцовая площадь", placeholderText, R.drawable.hermitage, defaultReviews)
 
 @Composable
 internal fun MuseumCard(
     viewModel: AppViewModel,
-    museum: Museum = defaultMuseum,
+    museum: Museum,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current

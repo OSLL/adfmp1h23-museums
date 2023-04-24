@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MuseumSearchViewModel @Inject constructor() : ViewModel() {
-    private var allMuseums: ArrayList<Museum> = ArrayList<Museum>()
+    private var allMuseums: MutableList<Museum> = ArrayList<Museum>()
     private val searchText: MutableStateFlow<String> = MutableStateFlow("")
     private var showProgressBar: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private var matchedMuseums: MutableStateFlow<List<Museum>> =
@@ -35,13 +35,14 @@ class MuseumSearchViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun retrieveMuseums() {
-        allMuseums.addAll(MuseumDataProvider.defaultProvider.museums)
+        allMuseums += MuseumDataProvider.defaultProvider.museums
+        matchedMuseums.value = allMuseums
     }
 
     fun onSearchTextChanged(changedSearchText: String) {
         searchText.value = changedSearchText
         if (changedSearchText.isEmpty()) {
-            matchedMuseums.value = arrayListOf()
+            matchedMuseums.value = allMuseums
             return
         }
         val museumsFromSearch = allMuseums.filter { museum ->

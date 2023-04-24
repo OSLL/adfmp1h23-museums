@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -16,7 +17,10 @@ import com.google.android.gms.location.LocationServices
 import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.screens.MainScreen
 import com.itmo.museum.ui.theme.MuseumTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@ExperimentalComposeUiApi
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val viewModel: AppViewModel by viewModels()

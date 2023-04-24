@@ -1,10 +1,10 @@
 package com.itmo.museum.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -14,7 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.itmo.museum.navigation.MuseumAppScreen
 import com.itmo.museum.navigation.NavGraph
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@ExperimentalComposeUiApi
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()

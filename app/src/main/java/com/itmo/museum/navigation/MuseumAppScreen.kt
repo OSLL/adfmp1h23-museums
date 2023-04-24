@@ -1,8 +1,7 @@
 package com.itmo.museum.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.itmo.museum.models.Museum
 import com.itmo.museum.util.routePage
@@ -25,7 +24,7 @@ sealed class MuseumAppScreen(
         object Visited : BottomBarScreen(
             route = "visited",
             title = "Visited",
-            icon = Icons.Default.ArrowBack,
+            icon = Icons.Default.Check,
         )
     }
 

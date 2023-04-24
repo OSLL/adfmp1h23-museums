@@ -2,11 +2,23 @@ package com.itmo.museum.util
 
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.net.Uri
-import com.google.android.gms.maps.model.LatLng
+import android.widget.Toast
+import com.itmo.museum.R
 import com.itmo.museum.models.MuseumDetails
 
-fun drawRoute(origin: LatLng, destination: MuseumDetails, context: Context) {
+fun makeLocationPermissionDeniedToast(context: Context) {
+    val message = context.getString(R.string.location_permission_denied)
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
+fun makeLocationNotFoundToast(context: Context) {
+    val message = context.getString(R.string.user_location_not_found)
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
+fun drawRoute(origin: Location, destination: MuseumDetails, context: Context) {
     val request = buildString {
         append("https://www.google.com/maps/dir/")
         append("${origin.latitude} ${origin.longitude}/")

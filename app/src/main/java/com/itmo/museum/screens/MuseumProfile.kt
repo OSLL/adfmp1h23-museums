@@ -1,5 +1,6 @@
 package com.itmo.museum.screens
 
+import android.location.Location
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
@@ -9,12 +10,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.google.android.gms.maps.model.LatLng
 import com.itmo.museum.elements.*
 import com.itmo.museum.models.*
 import com.itmo.museum.ui.theme.MuseumTheme
+import com.itmo.museum.util.makeLocationNotFoundToast
 import com.itmo.museum.util.toMuseum
 
 @Composable
@@ -23,11 +25,12 @@ fun MuseumProfile(
     mapViewModel: MapViewModel,
     viewModel: MuseumProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onBackClicked: () -> Unit = {},
-    onRouteClicked: (source: LatLng, destination: MuseumDetails) -> Unit = { _, _ -> },
+    onRouteClicked: (source: Location, destination: MuseumDetails) -> Unit = { _, _ -> },
     onVisitedClick: (Museum) -> Unit = {},
     onAddReviewClick: (Int) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
     val mapState by mapViewModel.uiState.collectAsState()
 
     MuseumTheme {
@@ -60,10 +63,9 @@ fun MuseumProfile(
                 WideButton(
                     text = "Route",
                     onClick = {
-                        val userLocation = mapState.lastKnownLocation.let {
-                            LatLng(it.latitude, it.longitude)
-                        }
-                        onRouteClicked(userLocation, uiState.museumDetails)
+                        mapState.lastKnownLocation
+                            ?.let { userLocation -> onRouteClicked(userLocation, uiState.museumDetails) }
+                            ?: makeLocationNotFoundToast(context)
                     }
                 )
             }

@@ -2,12 +2,10 @@ package com.itmo.museum.models
 
 import android.content.Context
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.LatLng
 import com.itmo.museum.MuseumsApp
 import com.itmo.museum.R
@@ -195,22 +193,9 @@ class MapViewModel : ViewModel() {
     )
     val uiState: StateFlow<MapState> = _uiState.asStateFlow()
 
-    fun getDeviceLocation(
-        fusedLocationProviderClient: FusedLocationProviderClient
-    ) {
-        try {
-            val locationResult = fusedLocationProviderClient.lastLocation
-            locationResult.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    _uiState.update {
-                        it.copy(
-                            lastKnownLocation = task.result ?: HERMITAGE_LOCATION
-                        )
-                    }
-                }
-            }
-        } catch (e: SecurityException) {
-            Log.e("loc", "Failed to get device location")
+    fun updateLocation(location: Location) {
+        _uiState.update {
+            it.copy(lastKnownLocation = location)
         }
     }
 }
@@ -258,9 +243,4 @@ object AppViewModelProvider {
 fun CreationExtras.museumApplication(): MuseumsApp =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MuseumsApp)
 
-data class MapState(val lastKnownLocation: Location = HERMITAGE_LOCATION)
-
-private val HERMITAGE_LOCATION = Location("").apply {
-    latitude = 59.93989616491988
-    longitude = 30.314559697617607
-}
+data class MapState(val lastKnownLocation: Location? = null)

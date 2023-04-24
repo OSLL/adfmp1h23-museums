@@ -31,4 +31,12 @@
     <string name="leningrad_defence_museum_description">
         Музей с коллекцией униформ, артиллерии и произведений искусства, посвященный истории блокады Ленинграда.
     </string>
+
+    <string name="user_location_not_found">
+        Sorry, the app was unable to obtain your location
+    </string>
+
+    <string name="location_permission_denied">
+        Permission to access device location is denied
+    </string>
 </resources>

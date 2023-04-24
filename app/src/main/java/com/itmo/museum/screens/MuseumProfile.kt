@@ -21,7 +21,6 @@ import com.itmo.museum.ui.theme.MuseumTheme
 fun MuseumProfile(
     museum: Museum = defaultMuseum,
     onBackClicked: () -> Unit = {},
-    onAboutClicked: () -> Unit = {},
     onRouteClicked: () -> Unit = {}
 ) {
     MuseumTheme {
@@ -30,7 +29,6 @@ fun MuseumProfile(
                 MuseumAppTopBar(
                     titleText = museum.name,
                     onBackClicked = onBackClicked,
-                    onAboutClicked = onAboutClicked
                 )
             },
         ) {

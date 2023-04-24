@@ -20,7 +20,6 @@ fun AboutScreen(
                 MuseumAppTopBar(
                     titleText = "Museums App",
                     onBackClicked = onBackClicked,
-                    onAboutClicked = {}
                 )
             }
         ) { innerPadding ->

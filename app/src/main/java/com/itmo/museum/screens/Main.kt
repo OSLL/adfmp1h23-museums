@@ -33,6 +33,7 @@ fun BottomBar(navController: NavHostController) {
     val screens = listOf(
         MuseumAppScreen.BottomBarScreen.Museums,
         MuseumAppScreen.BottomBarScreen.Visited,
+        MuseumAppScreen.BottomBarScreen.About,
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

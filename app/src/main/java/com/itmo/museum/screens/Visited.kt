@@ -19,7 +19,6 @@ import com.itmo.museum.models.AppViewModel
 @Composable
 fun VisitedScreen(
     onBackClicked: () -> Unit = {},
-    onAboutClicked: () -> Unit = {},
     viewModel: AppViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -29,7 +28,6 @@ fun VisitedScreen(
             MuseumAppTopBar(
                 titleText = "Visited",
                 onBackClicked = onBackClicked,
-                onAboutClicked = onAboutClicked
             )
         }
     ) { innerPadding ->

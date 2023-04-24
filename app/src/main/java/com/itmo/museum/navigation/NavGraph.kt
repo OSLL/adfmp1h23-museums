@@ -27,10 +27,6 @@ fun NavGraph(
     navController: NavHostController,
     viewModel: AppViewModel = viewModel()
 ) {
-    fun onAboutClick() {
-        navController.navigate(MuseumAppScreen.About.route)
-    }
-
     fun onBackClick() {
         navController.navigateUp()
     }
@@ -53,11 +49,10 @@ fun NavGraph(
         composable(route = MuseumAppScreen.BottomBarScreen.Visited.route) {
             VisitedScreen(
                 onBackClicked = ::onBackClick,
-                onAboutClicked = ::onAboutClick,
                 viewModel = viewModel
             )
         }
-        composable(route = MuseumAppScreen.About.route) {
+        composable(route = MuseumAppScreen.BottomBarScreen.About.route) {
             AboutScreen(
                 onBackClicked = ::onBackClick,
             )
@@ -67,14 +62,12 @@ fun NavGraph(
                 MuseumProfile(
                     museum = museum,
                     onBackClicked = ::onBackClick,
-                    onAboutClicked = ::onAboutClick,
                     onRouteClicked = { navController.navigate(museum.routePage) }
                 )
             }
             composable(route = MuseumAppScreen.Route(museum).route) {
                 RouteScreen(
                     onBackClicked = ::onBackClick,
-                    onAboutClicked = ::onAboutClick,
                     targetMuseum = museum
                 )
             }

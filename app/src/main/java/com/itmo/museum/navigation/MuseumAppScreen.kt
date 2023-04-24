@@ -26,6 +26,12 @@ sealed class MuseumAppScreen(
             title = "Visited",
             icon = Icons.Default.Check,
         )
+
+        object About : BottomBarScreen(
+            route = "about",
+            title = "About",
+            icon = Icons.Default.Info
+        )
     }
 
     class MuseumProfile(museum: Museum) : MuseumAppScreen(
@@ -36,10 +42,5 @@ sealed class MuseumAppScreen(
     class Route(museum: Museum) : MuseumAppScreen(
         route = museum.routePage,
         title = "Route to ${museum.name}"
-    )
-
-    object About : MuseumAppScreen(
-        route = "about",
-        title = "About"
     )
 }

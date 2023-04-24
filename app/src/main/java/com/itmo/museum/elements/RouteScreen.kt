@@ -18,7 +18,6 @@ import com.itmo.museum.ui.theme.MuseumTheme
 @Preview
 fun RouteScreen(
     onBackClicked: () -> Unit = {},
-    onAboutClicked: () -> Unit = {},
     targetMuseum: Museum = defaultMuseum
 ) {
     val mapProperties = MapProperties(
@@ -31,7 +30,6 @@ fun RouteScreen(
                 MuseumAppTopBar(
                     titleText = "Route to ${targetMuseum.name}",
                     onBackClicked = onBackClicked,
-                    onAboutClicked = onAboutClicked
                 )
             }
         ) { innerPadding ->

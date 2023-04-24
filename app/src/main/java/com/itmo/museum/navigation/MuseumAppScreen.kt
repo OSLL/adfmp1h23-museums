@@ -3,7 +3,6 @@ package com.itmo.museum.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.itmo.museum.models.Museum
 
 sealed class MuseumAppScreen(
     val route: String,
@@ -33,18 +32,31 @@ sealed class MuseumAppScreen(
         )
     }
 
-    class MuseumProfile(museum: Museum) : MuseumAppScreen(
-        route = museum.name,
-        title = "${museum.name} profile"
-    )
+    sealed class WithArgs(
+        route: String,
+        title: String,
+    ) : MuseumAppScreen(route, title) {
+        abstract val routeWithArgs: String
+
+        object MuseumProfile : WithArgs(
+            route = "museums",
+            title = "Museum profile"
+        ) {
+            const val museumIdArg: String = "museumId"
+            override val routeWithArgs: String = "$route/{$museumIdArg}"
+        }
+
+        object AddReview : WithArgs(
+            route = "add-review",
+            title = "Add review",
+        ) {
+            const val museumIdArg: String = "museumId"
+            override val routeWithArgs = "$route/{$museumIdArg}"
+        }
+    }
 
     object Greeting : MuseumAppScreen(
         route = "greeting",
         title = "Greeting"
-    )
-
-    class AddReview(museum: Museum) : MuseumAppScreen(
-        route = "add-review?museum=${museum.name}",
-        title = "Add review"
     )
 }

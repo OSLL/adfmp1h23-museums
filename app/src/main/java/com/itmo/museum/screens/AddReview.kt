@@ -11,8 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.gowtham.ratingbar.RatingBar
+import com.itmo.museum.models.*
 import com.itmo.museum.screens.BottomBar
 import com.itmo.museum.ui.theme.MuseumTheme
 
@@ -21,8 +23,10 @@ fun AddReview(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     onBackClicked: () -> Unit,
-    onPostReview: (Float, String) -> Unit = { _, _ -> },
+    viewModel: MuseumProfileViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     var rating by remember { mutableStateOf(5f) }
     var reviewText by remember { mutableStateOf(TextFieldValue()) }
 
@@ -55,7 +59,17 @@ fun AddReview(
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Button(
-                        onClick = { onPostReview(rating, reviewText.text) }
+                        onClick = {
+                            val review = UserReviewDetails(
+                                userId = uiState.user.id,
+                                userName = uiState.user.name,
+                                museumId = uiState.museumDetails.id,
+                                rating = rating,
+                                text = reviewText.text
+                            )
+                            viewModel.addReview(review)
+                            onBackClicked()
+                        }
                     ) {
                         Text(text = "Post review")
                     }

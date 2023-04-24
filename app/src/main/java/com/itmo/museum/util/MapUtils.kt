@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.google.android.gms.maps.model.LatLng
-import com.itmo.museum.models.Museum
+import com.itmo.museum.models.MuseumDetails
 
-fun drawRoute(origin: LatLng, destination: Museum, context: Context) {
+fun drawRoute(origin: LatLng, destination: MuseumDetails, context: Context) {
     val request = buildString {
         append("https://www.google.com/maps/dir/")
         append("${origin.latitude} ${origin.longitude}/")

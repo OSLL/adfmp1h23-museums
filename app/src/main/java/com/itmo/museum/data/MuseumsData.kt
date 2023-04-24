@@ -1,6 +1,5 @@
 package com.itmo.museum.data
 
-import com.google.android.gms.maps.model.LatLng
 import com.itmo.museum.R
 import com.itmo.museum.elements.placeholderText
 import com.itmo.museum.models.Museum
@@ -26,9 +25,11 @@ private class MuseumDataRegularProvider : MuseumDataProvider {
         val HERMITAGE = Museum(
             name = "Hermitage",
             address = "Дворцовая площадь",
+            isVisited = false,
             info = placeholderText,
             imageId = R.drawable.hermitage,
-            location = LatLng(59.939896, 30.314559)
+            latitude = 59.939896,
+            longitude = 30.314559
         )
     }
 }

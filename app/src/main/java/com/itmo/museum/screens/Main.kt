@@ -11,15 +11,17 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.itmo.museum.models.MapViewModel
 import com.itmo.museum.navigation.MuseumAppScreen
 import com.itmo.museum.navigation.NavGraph
 
 @ExperimentalComposeUiApi
 @Composable
-fun MainScreen() {
+fun MainScreen(mapViewModel: MapViewModel) {
     val navController = rememberNavController()
     NavGraph(
-        navController = navController
+        navController = navController,
+        mapViewModel = mapViewModel
     )
 }
 

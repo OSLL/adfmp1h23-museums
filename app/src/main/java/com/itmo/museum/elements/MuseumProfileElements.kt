@@ -15,8 +15,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.itmo.museum.R
 import com.itmo.museum.models.*
-import com.itmo.museum.util.getRatingOf
 import com.itmo.museum.util.shadow
 
 // TODO: remove later, this is just a placeholder
@@ -25,14 +26,17 @@ internal val placeholderText =
 
 @Composable
 internal fun MuseumCard(
-    viewModel: AppViewModel,
-    museum: Museum,
+    viewModel: MuseumProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
+    val museumName = uiState.museumDetails.name
+    val museumAddress = uiState.museumDetails.address
+    val museumImageId = uiState.museumDetails.imageId
+
     fun shareMuseumInfo() {
-        val message = "Check out the ${museum.name} at ${museum.address}"
+        val message = "Check out the $museumName at $museumAddress"
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, message)
@@ -48,27 +52,27 @@ internal fun MuseumCard(
             modifier = Modifier.padding(all = 10.dp)
         ) {
             Image(
-                painter = painterResource(id = museum.imageId),
+                painter = painterResource(id = museumImageId),
                 contentDescription = "Placeholder Image",
                 modifier = Modifier
                     .fillMaxWidth()
             )
             Text(
-                text = museum.name,
+                text = museumName,
                 fontSize = MaterialTheme.typography.body1.fontSize,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier
             )
             Text(
-                text = museum.address,
+                text = museumAddress,
                 fontSize = MaterialTheme.typography.body2.fontSize,
                 modifier = Modifier
             )
             Row {
                 FixedRatingBar(
                     modifier = Modifier.weight(1f),
-                    rating = uiState.getRatingOf(museum)
+                    rating = uiState.rating
                 )
                 Column(
                     modifier = Modifier
@@ -88,7 +92,7 @@ internal fun MuseumCard(
 }
 
 @Composable
-fun MuseumInfo(museum: Museum) {
+fun MuseumInfo(museum: MuseumDetails) {
     Text(
         text = museum.info,
         fontSize = MaterialTheme.typography.body1.fontSize,
@@ -101,7 +105,7 @@ fun MuseumInfo(museum: Museum) {
 @Composable
 fun ReviewList(
     onAddReviewClick: () -> Unit = {},
-    reviews: List<UserReview>
+    reviews: List<UserReviewDetails>
 ) {
     Text(
         text = "${reviews.size} reviews",
@@ -127,7 +131,10 @@ fun ReviewList(
 }
 
 @Composable
-fun Review(review: UserReview, modifier: Modifier) {
+fun Review(
+    review: UserReviewDetails,
+    modifier: Modifier
+) {
     BoxWithShadow {
         Column(modifier = modifier.padding(20.dp)) {
             Row(
@@ -136,14 +143,14 @@ fun Review(review: UserReview, modifier: Modifier) {
                     .wrapContentHeight()
             ) {
                 Image(
-                    painter = painterResource(id = review.user.profilePictureId),
+                    painter = painterResource(id = R.drawable.default_user),
                     contentDescription = "Profile picture",
                     modifier = Modifier
                         .size(40.dp)
                 )
                 Spacer(modifier = Modifier.padding(5.dp))
                 Text(
-                    text = review.user.name,
+                    text = review.userName,
                     fontSize = MaterialTheme.typography.h6.fontSize,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,

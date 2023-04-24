@@ -9,31 +9,32 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.LatLng
 import com.itmo.museum.elements.*
-import com.itmo.museum.models.AppViewModel
-import com.itmo.museum.models.Museum
+import com.itmo.museum.models.*
 import com.itmo.museum.ui.theme.MuseumTheme
-import com.itmo.museum.util.getReviewsFor
+import com.itmo.museum.util.toMuseum
 
 @Composable
 fun MuseumProfile(
     navController: NavHostController,
-    viewModel: AppViewModel,
-    museum: Museum,
+    mapViewModel: MapViewModel,
+    viewModel: MuseumProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onBackClicked: () -> Unit = {},
-    onRouteClicked: (source: LatLng, destination: Museum) -> Unit = { _, _ -> },
+    onRouteClicked: (source: LatLng, destination: MuseumDetails) -> Unit = { _, _ -> },
     onVisitedClick: (Museum) -> Unit = {},
-    onAddReviewClick: () -> Unit = {},
+    onAddReviewClick: (Int) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val mapState by mapViewModel.uiState.collectAsState()
 
     MuseumTheme {
         Scaffold(
             topBar = {
                 MuseumAppTopBar(
-                    titleText = museum.name,
+                    titleText = uiState.museumDetails.name,
                     onBackClicked = onBackClicked,
                 )
             },
@@ -45,27 +46,24 @@ fun MuseumProfile(
                     .verticalScroll(state = ScrollState(0)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                MuseumCard(
-                    viewModel = viewModel,
-                    museum = museum
-                )
+                MuseumCard()
                 Button(
-                    onClick = { onVisitedClick(museum) }
+                    onClick = { onVisitedClick(uiState.museumDetails.toMuseum()) }
                 ) {
                     Text(text = "Mark as visited")
                 }
-                MuseumInfo(museum = museum)
+                MuseumInfo(museum = uiState.museumDetails)
                 ReviewList(
-                    onAddReviewClick = onAddReviewClick,
-                    reviews = uiState.getReviewsFor(museum)
+                    onAddReviewClick = { onAddReviewClick(uiState.museumDetails.id) },
+                    reviews = uiState.reviews
                 )
                 WideButton(
                     text = "Route",
                     onClick = {
-                        val userLocation = uiState.lastKnownLocation.let {
+                        val userLocation = mapState.lastKnownLocation.let {
                             LatLng(it.latitude, it.longitude)
                         }
-                        onRouteClicked(userLocation, museum)
+                        onRouteClicked(userLocation, uiState.museumDetails)
                     }
                 )
             }

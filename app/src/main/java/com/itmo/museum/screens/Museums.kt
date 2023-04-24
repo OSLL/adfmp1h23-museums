@@ -10,15 +10,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.itmo.museum.data.MuseumDataProvider
 import com.itmo.museum.elements.MuseumIndexCard
-import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.models.Museum
 
 @Composable
 fun MuseumCardList(
     modifier: Modifier = Modifier,
-    viewModel: AppViewModel,
     backgroundColor: Color = Color.LightGray,
-    onMuseumClick: (museum: String) -> Unit = {},
+    onMuseumClick: (museumId: Int) -> Unit = {},
     museums: List<Museum> = MuseumDataProvider.defaultProvider.museums,
 ) {
     val museumPairs = museums.chunked(2)
@@ -32,12 +30,10 @@ fun MuseumCardList(
                 val (left, right) = chunk
                 Row(modifier = Modifier) {
                     RowMuseumIndexCard(
-                        viewModel = viewModel,
                         onMuseumClick = onMuseumClick,
                         museum = left
                     )
                     RowMuseumIndexCard(
-                        viewModel = viewModel,
                         onMuseumClick = onMuseumClick,
                         museum = right
                     )
@@ -45,7 +41,6 @@ fun MuseumCardList(
             } else {
                 Row(modifier = Modifier) {
                     RowMuseumIndexCard(
-                        viewModel = viewModel,
                         onMuseumClick = onMuseumClick,
                         weight = 1.0f,
                         museum = chunk.first()
@@ -59,8 +54,7 @@ fun MuseumCardList(
 
 @Composable
 private fun RowScope.RowMuseumIndexCard(
-    viewModel: AppViewModel,
-    onMuseumClick: (museum: String) -> Unit = {},
+    onMuseumClick: (museumId: Int) -> Unit = {},
     weight: Float = 1.0f,
     museum: Museum
 ) {
@@ -68,8 +62,7 @@ private fun RowScope.RowMuseumIndexCard(
         modifier = Modifier
             .weight(weight)
             .padding(2.dp),
-        viewModel = viewModel,
         museum = museum,
-        onClick = onMuseumClick
+        onClick = { onMuseumClick(museum.id) }
     )
 }

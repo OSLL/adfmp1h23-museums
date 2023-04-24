@@ -14,12 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.itmo.museum.R
-import com.itmo.museum.models.AppViewModel
+import com.itmo.museum.models.AppViewModelProvider
 import com.itmo.museum.models.Museum
+import com.itmo.museum.models.MuseumListViewModel
 import com.itmo.museum.models.Rating
 import com.itmo.museum.ui.theme.MuseumTheme
-import com.itmo.museum.util.getRatingOf
+import com.itmo.museum.util.rememberFlowWithLifecycle
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -31,21 +33,47 @@ fun FixedRatingBar(
     modifier: Modifier = Modifier,
     rating: Rating = defaultRating,
 ) {
+    @Composable
+    fun emptyStar() {
+        Image(
+            painter = painterResource(id = R.drawable.baseline_star_outline_24),
+            contentDescription = "Empty star"
+        )
+    }
+
+    @Composable
+    fun halfStar() {
+        Image(
+            painter = painterResource(id = R.drawable.baseline_star_half_24),
+            contentDescription = "Half star"
+        )
+    }
+
+    @Composable
+    fun star() {
+        Image(
+            painter = painterResource(id = R.drawable.baseline_star_24),
+            contentDescription = "Star"
+        )
+    }
+
+
     Row(modifier = modifier) {
-        repeat(floor(rating.average).toInt()) {
-            Image(painter = painterResource(id = R.drawable.baseline_star_24), contentDescription = "")
-        }
+        val ratingFloor = floor(rating.average).toInt()
+        val ratingCeil = ceil(rating.average).toInt()
+
+        repeat(ratingFloor) { star() }
 
         if (floor(rating.average) != ceil(rating.average)) {
-            if (rating.average - rating.average.toInt() >= 0.95) {
-                Image(painter = painterResource(id = R.drawable.baseline_star_24), contentDescription = "")
-            } else {
-                Image(painter = painterResource(id = R.drawable.baseline_star_half_24), contentDescription = "")
+            when (rating.average - ratingFloor) {
+                in (0.0 .. 0.24) -> emptyStar()
+                in (0.24 .. 0.74) -> halfStar()
+                in (0.74 .. 1.0) -> star()
             }
         }
 
-        repeat(5 - ceil(rating.average).toInt()) {
-            Image(painter = painterResource(id = R.drawable.baseline_star_outline_24), contentDescription = "")
+        repeat(5 - ratingCeil) {
+            emptyStar()
         }
     }
 }
@@ -53,11 +81,12 @@ fun FixedRatingBar(
 @Composable
 fun MuseumIndexCard(
     modifier: Modifier = Modifier,
-    viewModel: AppViewModel,
+    viewModel: MuseumListViewModel = viewModel(factory = AppViewModelProvider.Factory),
     museum: Museum,
     onClick: (String) -> Unit = {}
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val ratingLifecycleAware = rememberFlowWithLifecycle(flow = viewModel.getRatingOf(museum.id))
+    val rating by ratingLifecycleAware.collectAsState(initial = Rating())
 
     MuseumTheme {
         Surface(
@@ -74,7 +103,7 @@ fun MuseumIndexCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = museum.name)
                 Spacer(modifier = Modifier.height(4.dp))
-                FixedRatingBar(rating = uiState.getRatingOf(museum))
+                FixedRatingBar(rating = rating)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = museum.address)
                 Spacer(modifier = Modifier.height(4.dp))

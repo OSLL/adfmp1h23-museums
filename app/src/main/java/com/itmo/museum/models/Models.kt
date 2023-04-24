@@ -1,5 +1,7 @@
 package com.itmo.museum.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.itmo.museum.R
 
@@ -8,29 +10,37 @@ data class Rating(
     val average: Float = 0f
 )
 
+@Entity(tableName = "museums")
 data class Museum(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val name: String,
     val address: String,
+    val isVisited: Boolean,
     val info: String,
     val imageId: Int,
-    val reviews: List<UserReview> = emptyList(),
-    val location: LatLng
-)
-
-data class User(
-    val name: String,
-    val profilePictureId: Int,
+    val latitude: Double,
+    val longitude: Double
 ) {
-    companion object {
-        val Anonymous = User(
-            name = "Anonymous",
-            profilePictureId = R.drawable.default_user,
-        )
-    }
+    val location: LatLng
+        get() = LatLng(latitude, longitude)
 }
 
+@Entity(tableName = "Users")
+data class User(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val name: String,
+    val profilePictureId: Int = R.drawable.default_user
+)
+
+@Entity(tableName = "Reviews")
 data class UserReview(
-    val user: User,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val userId: Int,
+    val userName: String,
+    val museumId: Int,
     val rating: Float,
     val text: String,
 )

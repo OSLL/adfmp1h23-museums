@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Museum</string>
+    <string name="user_preferences_file_key">user_preferences</string>
+    <string name="username_key">username_key</string>
+    <string name="profile_pic_id_key">profile_pic_id_key</string>
 </resources>

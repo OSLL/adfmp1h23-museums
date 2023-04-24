@@ -7,41 +7,35 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.itmo.museum.models.AppViewModel
-import com.itmo.museum.models.MuseumSearchModelState
-import com.itmo.museum.models.MuseumSearchViewModel
+import com.itmo.museum.models.*
 import com.itmo.museum.screens.BottomBar
 import com.itmo.museum.screens.MuseumCardList
-import com.itmo.museum.util.rememberFlowWithLifecycle
 
 @ExperimentalComposeUiApi
 @Composable
 fun MuseumSearchUI(
     navController: NavHostController,
-    viewModel: AppViewModel,
-    museumSearchViewModel: MuseumSearchViewModel,
-    onSearchTextChanged: (String) -> Unit = {},
     onBackClick: () -> Unit = {},
-    onClearClick: () -> Unit = {},
-    onMuseumClick: (String) -> Unit = {},
+    onMuseumClick: (Int) -> Unit = {},
+    viewModel: MuseumSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val museumSearchModelState by rememberFlowWithLifecycle(museumSearchViewModel.museumSearchModelState)
-        .collectAsState(initial = MuseumSearchModelState.Empty)
-Scaffold(
+    val museumSearchModelState by viewModel.museumSearchModelState.collectAsState()
+
+    Scaffold(
         bottomBar = { BottomBar(navController = navController) }
     ) { innerPadding ->
         SearchBarUI(
             modifier = Modifier.padding(innerPadding),
             searchText = museumSearchModelState.searchText,
             placeholderText = "Search museums",
-            onSearchTextChanged = onSearchTextChanged,
+            onSearchTextChanged = { viewModel.onSearchTextChanged(it) },
             onBackClick = onBackClick,
-            onClearClick = onClearClick,
+            onClearClick = { viewModel.onClearClick() },
             matchesFound = museumSearchModelState.museums.isNotEmpty()
         ) {
             MuseumCardList(
-                viewModel = viewModel,
                 museums = museumSearchModelState.museums,
                 onMuseumClick = onMuseumClick
             )

@@ -12,15 +12,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import com.itmo.museum.elements.MuseumAppTopBar
-import com.itmo.museum.models.AppViewModel
 import com.itmo.museum.models.Museum
+import com.itmo.museum.models.MuseumListViewModel
 
 @Composable
 fun VisitedScreen(
     navController: NavHostController,
     onBackClicked: () -> Unit = {},
-    onMuseumClick: (String) -> Unit = {},
-    viewModel: AppViewModel
+    onMuseumClick: (Int) -> Unit = {},
+    viewModel: MuseumListViewModel
 ) {
     Scaffold(
         topBar = {
@@ -41,8 +41,8 @@ fun VisitedScreen(
 
 @Composable
 private fun VisitedScreenContent(
-    onMuseumClick: (String) -> Unit = {},
-    viewModel: AppViewModel,
+    onMuseumClick: (Int) -> Unit = {},
+    viewModel: MuseumListViewModel,
     padding: PaddingValues
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -59,7 +59,6 @@ private fun VisitedScreenContent(
             NoMuseumsVisited()
         } else {
             VisitedMuseumsList(
-                viewModel = viewModel,
                 visitedMuseums = visitedMuseums,
                 onMuseumClick = onMuseumClick
             )
@@ -79,16 +78,14 @@ private fun NoMuseumsVisited() {
 
 @Composable
 private fun VisitedMuseumsList(
-    viewModel: AppViewModel,
     visitedMuseums: List<Museum>,
-    onMuseumClick: (String) -> Unit = {}
+    onMuseumClick: (Int) -> Unit = {}
 ) {
     Box {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             MuseumCardList(
-                viewModel = viewModel,
                 onMuseumClick = onMuseumClick,
                 backgroundColor = Color.Blue,
                 museums = visitedMuseums

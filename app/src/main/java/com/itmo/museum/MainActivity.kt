@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.itmo.museum.models.AppViewModel
+import com.itmo.museum.models.MapViewModel
 import com.itmo.museum.screens.MainScreen
 import com.itmo.museum.ui.theme.MuseumTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,21 +23,21 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private val viewModel: AppViewModel by viewModels()
+    private val mapViewModel: MapViewModel by viewModels()
 
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                viewModel.getDeviceLocation(fusedLocationProviderClient)
+                mapViewModel.getDeviceLocation(fusedLocationProviderClient)
             }
         }
 
     private fun askPermissions() =
         when (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION)) {
             PackageManager.PERMISSION_GRANTED -> {
-                viewModel.getDeviceLocation(fusedLocationProviderClient)
+                mapViewModel.getDeviceLocation(fusedLocationProviderClient)
             }
             else -> {
                 requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
         askPermissions()
         setContent {
             MuseumTheme {
-                MainScreen()
+                MainScreen(mapViewModel = mapViewModel)
             }
         }
     }

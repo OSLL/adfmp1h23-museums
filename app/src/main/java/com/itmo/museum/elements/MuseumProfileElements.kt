@@ -100,9 +100,11 @@ fun MuseumInfo(museum: MuseumDetails) {
 
 @Composable
 fun ReviewList(
+    viewModel: MuseumProfileViewModel,
     onAddReviewClick: () -> Unit = {},
     reviews: List<UserReviewDetails>
 ) {
+    val isReviewed by viewModel.isReviewed.collectAsState()
     Text(
         text = "${reviews.size} reviews",
         fontSize = MaterialTheme.typography.h5.fontSize,
@@ -111,6 +113,7 @@ fun ReviewList(
         modifier = Modifier.padding(10.dp)
     )
     WideButton(
+        enabled = isReviewed != IsReviewedState.UNKNOWN,
         text = "Add review",
         onClick = onAddReviewClick
     )
@@ -169,12 +172,15 @@ fun Review(
 
 @Composable
 fun WideButton(
+    modifier: Modifier = Modifier,
+    enabled: Boolean,
     text: String,
     onClick: () -> Unit = {}
 ) {
     Button(
+        enabled = enabled,
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(20.dp)

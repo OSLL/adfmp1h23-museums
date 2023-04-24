@@ -20,6 +20,13 @@ interface ReviewDao {
     )
     fun getReviewsFor(museumId: Int): Flow<List<UserReview>>
 
+    @Query(
+        "SELECT * FROM reviews WHERE " +
+                "userId = :userId " +
+                "AND museumId = :museumId"
+    )
+    fun getReviewBy(userId: Int, museumId: Int): Flow<UserReview?>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(review: UserReview)
 }

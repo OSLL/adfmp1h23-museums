@@ -140,7 +140,28 @@ class MuseumProfileViewModel(
                 initialValue = emptyList()
             )
 
-    private val museumProfileState: StateFlow<MuseumDetails> =
+    private val _isReviewed = MutableStateFlow(IsReviewedState.UNKNOWN)
+    val isReviewed: StateFlow<IsReviewedState> = _isReviewed.asStateFlow()
+
+    fun checkIfReviewed() {
+        val userId = uiState.value.user.id
+        val museumId = uiState.value.museumDetails.id
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                reviewRepository
+                    .getReviewBy(userId, museumId)
+                    .collect { review ->
+                        if (review == null) {
+                            _isReviewed.update { IsReviewedState.IS_NOT_REVIEWED }
+                        } else {
+                            _isReviewed.update { IsReviewedState.IS_REVIEWED }
+                        }
+                    }
+            }
+        }
+    }
+
+    private val museumDetails: StateFlow<MuseumDetails> =
         museumRepository.getMuseumStream(museumId)
             .filterNotNull()
             .map { it.toMuseumDetails() }
@@ -152,7 +173,7 @@ class MuseumProfileViewModel(
 
     val uiState: StateFlow<MuseumProfileUiState> = combine(
         reviews,
-        museumProfileState
+        museumDetails,
     ) { reviews, museumDetails ->
         MuseumProfileUiState(
             user = username?.let { User(name = it) } ?: UserDetails.Anonymous,
@@ -170,6 +191,7 @@ class MuseumProfileViewModel(
     )
 
     fun addReview(review: UserReviewDetails) {
+        _isReviewed.update { IsReviewedState.IS_REVIEWED }
         viewModelScope.launch {
             reviewRepository.insertReview(review.toUserReview())
         }
@@ -187,6 +209,12 @@ data class MuseumProfileUiState(
     val museumDetails: MuseumDetails = MuseumDetails()
 )
 
+enum class IsReviewedState {
+    UNKNOWN,
+    IS_NOT_REVIEWED,
+    IS_REVIEWED
+}
+
 class MapViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         MapState()
@@ -202,6 +230,7 @@ class MapViewModel : ViewModel() {
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
+        val profileViewModels = mutableMapOf<Int, MuseumProfileViewModel>()
         initializer {
             MuseumListViewModel(
                 museumApplication().applicationContext.getUsername(),
@@ -214,12 +243,14 @@ object AppViewModelProvider {
             val savedStateHandle = this.createSavedStateHandle()
             val museumId: Int =
                 checkNotNull(savedStateHandle[MuseumAppScreen.WithArgs.MuseumProfile.museumIdArg])
-            MuseumProfileViewModel(
-                museumApplication().applicationContext.getUsername(),
-                museumId,
-                museumApplication().container.museumRepository,
-                museumApplication().container.reviewRepository
-            )
+            profileViewModels.getOrPut(museumId) {
+                MuseumProfileViewModel(
+                    museumApplication().applicationContext.getUsername(),
+                    museumId,
+                    museumApplication().container.museumRepository,
+                    museumApplication().container.reviewRepository
+                )
+            }
         }
         initializer {
             MuseumSearchViewModel(

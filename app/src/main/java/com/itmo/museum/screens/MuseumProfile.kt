@@ -5,9 +5,7 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,9 +25,12 @@ fun MuseumProfile(
     onBackClicked: () -> Unit = {},
     onRouteClicked: (source: Location, destination: MuseumDetails) -> Unit = { _, _ -> },
     onVisitedClick: (Museum) -> Unit = {},
-    onAddReviewClick: (Int) -> Unit = {},
+    onAddReviewClick: (isReviewed: Boolean, museumId: Int) -> Unit = { _, _ -> },
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    viewModel.checkIfReviewed()
+    val isReviewed by viewModel.isReviewed.collectAsState()
     val context = LocalContext.current
     val mapState by mapViewModel.uiState.collectAsState()
 
@@ -57,14 +58,26 @@ fun MuseumProfile(
                 }
                 MuseumInfo(museum = uiState.museumDetails)
                 ReviewList(
-                    onAddReviewClick = { onAddReviewClick(uiState.museumDetails.id) },
+                    viewModel = viewModel,
+                    onAddReviewClick = {
+                        onAddReviewClick(
+                            isReviewed == IsReviewedState.IS_REVIEWED,
+                            uiState.museumDetails.id
+                        )
+                    },
                     reviews = uiState.reviews
                 )
                 WideButton(
+                    enabled = true,
                     text = "Route",
                     onClick = {
                         mapState.lastKnownLocation
-                            ?.let { userLocation -> onRouteClicked(userLocation, uiState.museumDetails) }
+                            ?.let { userLocation ->
+                                onRouteClicked(
+                                    userLocation,
+                                    uiState.museumDetails
+                                )
+                            }
                             ?: makeLocationNotFoundToast(context)
                     }
                 )

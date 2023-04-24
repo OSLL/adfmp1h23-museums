@@ -10,5 +10,7 @@ interface ReviewRepository {
 
     fun getReviewsStream(museumId: Int): Flow<List<UserReview>>
 
+    fun getReviewBy(userId: Int, museumId: Int): Flow<UserReview?>
+
     suspend fun insertReview(review: UserReview)
 }

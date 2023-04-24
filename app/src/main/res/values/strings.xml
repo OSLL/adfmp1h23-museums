@@ -39,4 +39,8 @@
     <string name="location_permission_denied">
         Permission to access device location is denied
     </string>
+
+    <string name="review_already_present">
+        You have already left a review for this museum
+    </string>
 </resources>

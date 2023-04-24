@@ -1,6 +1,14 @@
 package com.itmo.museum.util
 
+import android.content.Context
+import android.widget.Toast
+import com.itmo.museum.R
 import com.itmo.museum.models.*
+
+fun Context.makeReviewAlreadyPresentToast() {
+    val message = getString(R.string.review_already_present)
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
 
 val List<UserReviewDetails>.rating: Rating
     get() = Rating(

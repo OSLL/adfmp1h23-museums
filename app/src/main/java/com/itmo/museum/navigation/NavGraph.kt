@@ -22,6 +22,7 @@ import com.itmo.museum.screens.GreetingScreen
 import com.itmo.museum.screens.MuseumProfile
 import com.itmo.museum.screens.VisitedScreen
 import com.itmo.museum.util.drawRoute
+import com.itmo.museum.util.makeReviewAlreadyPresentToast
 
 @ExperimentalComposeUiApi
 @Composable
@@ -101,8 +102,12 @@ fun NavGraph(
                     drawRoute(source, destination, context)
                 },
                 onVisitedClick = { museum -> viewModel.markAsVisited(museum) },
-                onAddReviewClick = {
-                    navController.navigate("${MuseumAppScreen.WithArgs.AddReview.route}/$it")
+                onAddReviewClick = { isReviewed, museumId ->
+                    if (isReviewed) {
+                        context.makeReviewAlreadyPresentToast()
+                    } else {
+                        navController.navigate("${MuseumAppScreen.WithArgs.AddReview.route}/$museumId")
+                    }
                 },
             )
         }

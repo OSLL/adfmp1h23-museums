@@ -16,6 +16,10 @@ class OfflineReviewRepository(private val reviewDao: ReviewDao) : ReviewReposito
         return reviewDao.getReviewsFor(museumId)
     }
 
+    override fun getReviewBy(userId: Int, museumId: Int): Flow<UserReview?> {
+        return reviewDao.getReviewBy(userId, museumId)
+    }
+
     override suspend fun insertReview(review: UserReview) {
         reviewDao.insert(review)
     }

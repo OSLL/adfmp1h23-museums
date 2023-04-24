@@ -24,7 +24,7 @@ private class MuseumDataRegularProvider : MuseumDataProvider {
     private companion object {
         // TODO: define multiple actual museums
         val HERMITAGE = Museum(
-            name = "Эрмитаж",
+            name = "Hermitage",
             address = "Дворцовая площадь",
             info = placeholderText,
             imageId = R.drawable.hermitage,

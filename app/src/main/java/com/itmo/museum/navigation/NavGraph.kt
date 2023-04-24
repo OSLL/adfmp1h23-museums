@@ -49,7 +49,8 @@ fun NavGraph(
         composable(route = MuseumAppScreen.BottomBarScreen.Visited.route) {
             VisitedScreen(
                 onBackClicked = ::onBackClick,
-                viewModel = viewModel
+                viewModel = viewModel,
+                onMuseumClick = { museum -> navController.navigate(museum) }
             )
         }
         composable(route = MuseumAppScreen.BottomBarScreen.About.route) {
@@ -62,7 +63,8 @@ fun NavGraph(
                 MuseumProfile(
                     museum = museum,
                     onBackClicked = ::onBackClick,
-                    onRouteClicked = { navController.navigate(museum.routePage) }
+                    onRouteClicked = { navController.navigate(museum.routePage) },
+                    onVisitedClick = { museum -> viewModel.addVisitedMuseum(museum) }
                 )
             }
             composable(route = MuseumAppScreen.Route(museum).route) {

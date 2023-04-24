@@ -56,9 +56,7 @@ internal fun MuseumCard(
                 color = Color.Black,
                 modifier = Modifier
             )
-            RatingBar(
-                rating = museum.rating,
-            )
+            RatingBar(rating = museum.rating)
         }
     }
 }
@@ -121,7 +119,7 @@ fun Review(review: UserReview, modifier: Modifier) {
                 )
             }
 
-            RatingBar(Rating(1, review.rating.toDouble()))
+            RatingBar(rating = Rating(1, review.rating.toDouble()))
 
             Text(
                 text = review.text,

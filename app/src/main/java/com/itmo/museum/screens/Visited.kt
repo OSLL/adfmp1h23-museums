@@ -2,6 +2,7 @@ package com.itmo.museum.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -13,12 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import com.itmo.museum.elements.MuseumAppTopBar
-import com.itmo.museum.elements.MuseumIndexCard
 import com.itmo.museum.models.AppViewModel
+import com.itmo.museum.models.Museum
 
 @Composable
 fun VisitedScreen(
     onBackClicked: () -> Unit = {},
+    onMuseumClick: (String) -> Unit = {},
     viewModel: AppViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -38,19 +40,43 @@ fun VisitedScreen(
                 .background(Color.Blue),
             contentAlignment = Alignment.Center
         ) {
-            val visitedMuseums = uiState.visitedMuseums
+            val visitedMuseums = uiState.visitedMuseums.toList()
             if (visitedMuseums.isEmpty()) {
-                Text(
-                    text = "No museums visited yet",
-                    fontSize = MaterialTheme.typography.h4.fontSize,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
+                NoMuseumsVisited()
             } else {
-                visitedMuseums.forEach { museum ->
-                    MuseumIndexCard(museum = museum)
-                }
+                VisitedMuseumsList(
+                    visitedMuseums = visitedMuseums,
+                    onMuseumClick = onMuseumClick
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun NoMuseumsVisited() {
+    Text(
+        text = "No museums visited yet",
+        fontSize = MaterialTheme.typography.h4.fontSize,
+        fontWeight = FontWeight.Bold,
+        color = Color.White
+    )
+}
+
+@Composable
+private fun VisitedMuseumsList(
+    visitedMuseums: List<Museum>,
+    onMuseumClick: (String) -> Unit = {}
+) {
+    Box {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            MuseumCardList(
+                onMuseumClick = onMuseumClick,
+                backgroundColor = Color.Blue,
+                museums = visitedMuseums
+            )
         }
     }
 }

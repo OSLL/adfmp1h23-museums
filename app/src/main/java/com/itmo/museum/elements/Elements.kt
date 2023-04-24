@@ -1,6 +1,7 @@
 package com.itmo.museum.elements
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -22,8 +23,11 @@ private val defaultRating = Rating(1200, 3.96)
 
 @Preview
 @Composable
-fun RatingBar(rating: Rating = defaultRating) {
-    Row {
+fun RatingBar(
+    modifier: Modifier = Modifier,
+    rating: Rating = defaultRating,
+) {
+    Row(modifier = modifier) {
         repeat(floor(rating.average).toInt()) {
             Image(painter = painterResource(id = R.drawable.baseline_star_24), contentDescription = "")
         }
@@ -46,10 +50,13 @@ fun RatingBar(rating: Rating = defaultRating) {
 @Composable
 fun MuseumIndexCard(
     modifier: Modifier = Modifier,
-    museum: Museum = defaultMuseum
+    museum: Museum = defaultMuseum,
+    onClick: (String) -> Unit = {}
 ) {
     MuseumTheme {
-        Surface(modifier = modifier) {
+        Surface(
+            modifier = modifier.clickable { onClick(museum.name) }
+        ) {
             Column(modifier = Modifier
                 .padding(all = 8.dp)
             ) {
@@ -61,7 +68,7 @@ fun MuseumIndexCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = museum.name)
                 Spacer(modifier = Modifier.height(4.dp))
-                RatingBar(museum.rating)
+                RatingBar(rating = museum.rating)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = museum.address)
                 Spacer(modifier = Modifier.height(4.dp))

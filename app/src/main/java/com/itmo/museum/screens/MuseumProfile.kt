@@ -21,7 +21,8 @@ import com.itmo.museum.ui.theme.MuseumTheme
 fun MuseumProfile(
     museum: Museum = defaultMuseum,
     onBackClicked: () -> Unit = {},
-    onRouteClicked: () -> Unit = {}
+    onRouteClicked: () -> Unit = {},
+    onVisitedClick: (Museum) -> Unit = {}
 ) {
     MuseumTheme {
         Scaffold(
@@ -39,6 +40,11 @@ fun MuseumProfile(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 MuseumCard(museum = museum)
+                Button(
+                    onClick = { onVisitedClick(museum) }
+                ) {
+                    Text(text = "Mark as visited")
+                }
                 MuseumInfo(museum = museum)
                 ReviewList(museum.reviews)
                 RouteButton(onClick = onRouteClicked)

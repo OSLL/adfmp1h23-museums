@@ -4,8 +4,8 @@ import android.location.Location
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.PersistentSet
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +15,7 @@ class AppViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         AppUiState(
             lastKnownLocation = null,
-            visitedMuseums = persistentListOf()
+            visitedMuseums = persistentSetOf()
         )
     )
     val uiState: StateFlow<AppUiState> = _uiState.asStateFlow()
@@ -48,5 +48,5 @@ class AppViewModel : ViewModel() {
 
 data class AppUiState(
     val lastKnownLocation: Location?,
-    val visitedMuseums: PersistentList<Museum>
+    val visitedMuseums: PersistentSet<Museum>
 )

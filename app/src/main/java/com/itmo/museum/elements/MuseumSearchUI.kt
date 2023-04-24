@@ -31,7 +31,7 @@ fun MuseumSearchUI(
     ) {
         MuseumCardList(
             museums = museumSearchModelState.museums,
-            onMuseumClicked = onMuseumClick
+            onMuseumClick = onMuseumClick
         )
     }
 }

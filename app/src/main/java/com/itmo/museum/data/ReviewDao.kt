@@ -29,4 +29,7 @@ interface ReviewDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(review: UserReview)
+
+    @Query("DELETE FROM reviews")
+    suspend fun deleteAll()
 }

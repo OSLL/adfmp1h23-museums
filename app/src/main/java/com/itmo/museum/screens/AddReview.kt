@@ -9,11 +9,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.gowtham.ratingbar.RatingBar
+import com.itmo.museum.R
 import com.itmo.museum.models.*
 import com.itmo.museum.screens.BottomBar
 import com.itmo.museum.ui.theme.MuseumTheme
@@ -43,6 +46,7 @@ fun AddReview(
             Box(modifier = Modifier.padding(innerPadding)) {
                 Column(modifier.padding(20.dp)) {
                     RatingBar(
+                        modifier = Modifier.testTag(stringResource(id = R.string.rating_bar_review)),
                         value = rating,
                         onValueChange = { rating = it },
                         onRatingChanged = {}
@@ -51,7 +55,8 @@ fun AddReview(
                     TextField(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .verticalScroll(state = ScrollState(0)),
+                            .verticalScroll(state = ScrollState(0))
+                            .testTag(stringResource(id = R.string.review_text_input)),
                         placeholder = { Text(text = "Enter your review") },
                         value = reviewText,
                         onValueChange = { reviewText = it },
@@ -59,6 +64,7 @@ fun AddReview(
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Button(
+                        modifier = Modifier.testTag(stringResource(id = R.string.post_review_button)),
                         onClick = {
                             val review = UserReviewDetails(
                                 userId = uiState.user.id,

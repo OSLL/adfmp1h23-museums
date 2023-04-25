@@ -196,7 +196,7 @@ class MuseumProfileViewModel(
     )
 
     fun addReview(review: UserReviewDetails) {
-        _isReviewed.update { IsReviewedState.IS_REVIEWED }
+        _isReviewed.update { IsReviewedState.UNKNOWN }
         viewModelScope.launch {
             reviewRepository.insertReview(review.toUserReview())
         }
@@ -235,7 +235,6 @@ class MapViewModel : ViewModel() {
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
-        val profileViewModels = mutableMapOf<Int, MuseumProfileViewModel>()
         initializer {
             MuseumListViewModel(
                 museumApplication().applicationContext.getUsername(),
@@ -248,14 +247,12 @@ object AppViewModelProvider {
             val savedStateHandle = this.createSavedStateHandle()
             val museumId: Int =
                 checkNotNull(savedStateHandle[MuseumAppScreen.WithArgs.MuseumProfile.museumIdArg])
-            profileViewModels.getOrPut(museumId) {
                 MuseumProfileViewModel(
                     museumApplication().applicationContext.getUsername(),
                     museumId,
                     museumApplication().container.museumRepository,
                     museumApplication().container.reviewRepository
                 )
-            }
         }
         initializer {
             MuseumSearchViewModel(

@@ -8,10 +8,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.itmo.museum.R
 import com.itmo.museum.data.MuseumDataProvider
 import com.itmo.museum.elements.MuseumIndexCard
 import com.itmo.museum.models.Museum
+import com.itmo.museum.util.SemanticKeys
 
 @Composable
 fun MuseumCardList(
@@ -23,6 +28,7 @@ fun MuseumCardList(
     val museumPairs = museums.chunked(2)
     Column(
         modifier = modifier
+            .testTag(stringResource(id = R.string.museum_list))
             .fillMaxSize()
             .background(color = backgroundColor)
             .verticalScroll(state = ScrollState(0))
@@ -95,7 +101,8 @@ private fun RowScope.RowMuseumIndexCard(
     MuseumIndexCard(
         modifier = modifier
             .weight(weight)
-            .padding(2.dp),
+            .padding(2.dp)
+            .semantics { set(SemanticKeys.MuseumCard, "museum-${museum.name}") },
         museum = museum,
         onClick = { onMuseumClick(museum.id) }
     )

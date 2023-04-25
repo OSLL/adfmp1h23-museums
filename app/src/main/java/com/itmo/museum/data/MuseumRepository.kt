@@ -13,4 +13,6 @@ interface MuseumRepository {
     suspend fun insertMuseum(museum: Museum)
 
     suspend fun updateMuseum(museum: Museum)
+
+    suspend fun markAllAsNotVisited()
 }

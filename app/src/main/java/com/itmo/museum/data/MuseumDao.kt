@@ -20,4 +20,7 @@ interface MuseumDao {
 
     @Update
     suspend fun update(museum: Museum)
+
+    @Query("UPDATE museums SET isVisited = 0")
+    suspend fun markAllAsNotVisited()
 }

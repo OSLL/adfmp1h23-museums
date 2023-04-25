@@ -13,4 +13,6 @@ interface ReviewRepository {
     fun getReviewBy(userId: Int, museumId: Int): Flow<UserReview?>
 
     suspend fun insertReview(review: UserReview)
+
+    suspend fun deleteAll()
 }

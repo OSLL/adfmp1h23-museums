@@ -43,4 +43,33 @@
     <string name="review_already_present">
         You have already left a review for this museum
     </string>
+
+    <string name="login_button">login-button</string>
+    <string name="skip_login_button">skip-login-button</string>
+    <string name="add_review_button">add-review-button</string>
+    <string name="post_review_button">post-review-button</string>
+    <string name="rating_bar_review">rating-bar-review</string>
+    <string name="review_text_input">review-text-input</string>
+    <string name="review_card">review-card</string>
+    <string name="museum_list">museum-list</string>
+    <string name="about_page_info">about-page-info</string>
+    <string name="museum_search_input">museum-search-input</string>
+    <string name="username_input">username-input</string>
+
+    <string name="about_page_content">
+        This app allows a user to search through the many museums of Saint Petersburg.
+        Each museum has its own profile where one can find some useful info about a museum
+        along with reviews from other users.
+
+        If you find a certain museum interesting, you can request a route to it on the map
+        so that you can visit it yourself.
+
+        A user can also mark the museums they have already visited. Such museums can be found
+        on the \'Visited\' page of the app.
+
+        Authors: Arsen Nagdalian and Anton Sudov
+    </string>
+
+    <string name="author_1">Arsen Nagdalian</string>
+    <string name="author_2">Anton Sudov</string>
 </resources>

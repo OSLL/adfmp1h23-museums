@@ -23,4 +23,8 @@ class OfflineMuseumRepository(private val museumDao: MuseumDao) : MuseumReposito
     override suspend fun updateMuseum(museum: Museum) {
         museumDao.update(museum)
     }
+
+    override suspend fun markAllAsNotVisited() {
+        museumDao.markAllAsNotVisited()
+    }
 }

@@ -12,12 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.itmo.museum.R
 import com.itmo.museum.models.*
+import com.itmo.museum.util.SemanticKeys
 import com.itmo.museum.util.shadow
 
 @Composable
@@ -113,6 +117,7 @@ fun ReviewList(
         modifier = Modifier.padding(10.dp)
     )
     WideButton(
+        modifier = Modifier.testTag(stringResource(id = R.string.add_review_button)),
         enabled = isReviewed != IsReviewedState.UNKNOWN,
         text = "Add review",
         onClick = onAddReviewClick
@@ -124,6 +129,7 @@ fun ReviewList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .testTag(stringResource(id = R.string.review_card))
             )
         }
     }
@@ -153,18 +159,22 @@ fun Review(
                     fontSize = MaterialTheme.typography.h6.fontSize,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .semantics { set(SemanticKeys.ReviewAuthor, review.userName) }
                 )
             }
 
             FixedRatingBar(rating = Rating(1, review.rating))
 
             Text(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .semantics { set(SemanticKeys.ReviewText, review.text) },
                 text = review.text,
                 fontSize = MaterialTheme.typography.body1.fontSize,
                 fontWeight = FontWeight.Light,
                 color = Color.Black,
-                modifier = Modifier.padding(10.dp)
             )
         }
     }

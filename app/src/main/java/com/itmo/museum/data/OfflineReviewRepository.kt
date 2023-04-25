@@ -23,4 +23,8 @@ class OfflineReviewRepository(private val reviewDao: ReviewDao) : ReviewReposito
     override suspend fun insertReview(review: UserReview) {
         reviewDao.insert(review)
     }
+
+    override suspend fun deleteAll() {
+        reviewDao.deleteAll()
+    }
 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,6 +24,7 @@ import com.itmo.museum.models.Museum
 import com.itmo.museum.models.MuseumListViewModel
 import com.itmo.museum.models.Rating
 import com.itmo.museum.ui.theme.MuseumTheme
+import com.itmo.museum.util.SemanticKeys
 import com.itmo.museum.util.rememberFlowWithLifecycle
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -60,7 +62,10 @@ fun FixedRatingBar(
     }
 
 
-    Row(modifier = modifier) {
+    Row(
+        modifier = modifier
+            .semantics { set(SemanticKeys.RatingBar, rating.average) }
+    ) {
         val ratingFloor = floor(rating.average).toInt()
         val ratingCeil = ceil(rating.average).toInt()
 

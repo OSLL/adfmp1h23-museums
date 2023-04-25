@@ -17,13 +17,22 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.itmo.museum.models.MuseumListViewModel
+import com.itmo.museum.models.UserState
 import com.itmo.museum.ui.theme.MuseumTheme
 
 @Composable
 fun GreetingScreen(
+    viewModel: MuseumListViewModel,
     onLoginClick: (String) -> Unit = {},
     onSkipLoginClick: (Int) -> Unit = {}
 ) {
+    val uiState = viewModel.uiState.collectAsState()
+    val existingUsername = when (val userState = uiState.value.userState) {
+        is UserState.NotLoggedIn -> ""
+        is UserState.LoggedIn -> userState.username
+    }
+
     MuseumTheme {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -31,7 +40,7 @@ fun GreetingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val username = remember { mutableStateOf(TextFieldValue()) }
+            var username by remember { mutableStateOf(TextFieldValue(existingUsername)) }
 
             Text(
                 text = "Login",
@@ -41,14 +50,14 @@ fun GreetingScreen(
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
                 label = { Text(text = "Username") },
-                value = username.value,
-                onValueChange = { username.value = it }
+                value = username,
+                onValueChange = { username = it }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { onLoginClick(username.value.text) },
+                    onClick = { onLoginClick(username.text) },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth()

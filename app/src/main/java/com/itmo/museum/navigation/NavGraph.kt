@@ -2,8 +2,6 @@ package com.itmo.museum.navigation
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,25 +29,21 @@ fun NavGraph(
     mapViewModel: MapViewModel,
     viewModel: MuseumListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val uiState by viewModel.uiState.collectAsState()
 
     fun onBackClick() {
         navController.navigateUp()
     }
-
-    val startDestination = uiState.user
-        ?.let { MuseumAppScreen.BottomBarScreen.Museums }
-        ?: MuseumAppScreen.Greeting
 
     val context = LocalContext.current
 
     NavHost(
         modifier = Modifier,
         navController = navController,
-        startDestination = startDestination.route
+        startDestination = MuseumAppScreen.Greeting.route
     ) {
         composable(route = MuseumAppScreen.Greeting.route) {
             GreetingScreen(
+                viewModel = viewModel,
                 onLoginClick = { username ->
                     context.rememberUsername(username)
                     viewModel.addUser(User(name = username))

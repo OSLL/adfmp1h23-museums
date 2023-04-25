@@ -54,7 +54,7 @@ class MuseumListViewModel(
         museums
     ) { visitedMuseums, museums ->
         MuseumListUiState(
-            user = username?.let { User(name = it) },
+            userState = username?.let { UserState.LoggedIn(username = it) } ?: UserState.NotLoggedIn,
             museumList = museums,
             visitedMuseums = visitedMuseums
         )
@@ -82,10 +82,15 @@ class MuseumListViewModel(
 }
 
 data class MuseumListUiState(
-    val user: User? = null,
+    val userState: UserState = UserState.NotLoggedIn,
     val museumList: List<Museum> = emptyList(),
     val visitedMuseums: List<Museum> = emptyList()
 )
+
+sealed interface UserState {
+    object NotLoggedIn : UserState
+    class LoggedIn(val username: String) : UserState
+}
 
 data class MuseumDetails(
     val id: Int = 0,

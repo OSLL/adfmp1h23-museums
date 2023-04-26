@@ -9,8 +9,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.itmo.museum.R
 import com.itmo.museum.elements.*
 import com.itmo.museum.models.*
 import com.itmo.museum.ui.theme.MuseumTheme
@@ -52,6 +55,7 @@ fun MuseumProfile(
             ) {
                 MuseumCard()
                 Button(
+                    modifier = Modifier.testTag(stringResource(id = R.string.mark_as_visited_button)),
                     onClick = { onVisitedClick(uiState.museumDetails.toMuseum()) }
                 ) {
                     Text(text = "Mark as visited")

@@ -2,9 +2,11 @@ package com.itmo.museum
 
 import android.os.Build
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
@@ -27,6 +29,11 @@ abstract class AbstractMuseumUITest {
 
     private val database by lazy {
         MuseumDatabase.getDatabase(context)
+    }
+
+    fun ComposeTestRule.inputSearchText(text: String) {
+        onNodeWithTag(context.getString(R.string.museum_search_input))
+            .performTextInput(text)
     }
 
     @Before

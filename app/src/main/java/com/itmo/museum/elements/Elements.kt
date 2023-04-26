@@ -107,7 +107,10 @@ fun MuseumIndexCard(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = museum.name)
+            Text(
+                modifier = Modifier.semantics { set(SemanticKeys.MuseumCardName, museum.name) },
+                text = museum.name
+            )
             Spacer(modifier = Modifier.height(4.dp))
             FixedRatingBar(rating = rating)
             Spacer(modifier = Modifier.height(4.dp))

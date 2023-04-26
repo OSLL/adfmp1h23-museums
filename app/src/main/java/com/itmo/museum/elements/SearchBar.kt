@@ -19,9 +19,12 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.itmo.museum.R
 
 @ExperimentalComposeUiApi
 @Composable
@@ -92,7 +95,8 @@ fun SearchBar(
                     .onFocusChanged { focusState ->
                         showClearButton = (focusState.isFocused)
                     }
-                    .focusRequester(focusRequester),
+                    .focusRequester(focusRequester)
+                    .testTag(stringResource(id = R.string.museum_search_input)),
                 value = searchText,
                 onValueChange = onSearchTextChanged,
                 placeholder = {
@@ -113,7 +117,10 @@ fun SearchBar(
                         enter = fadeIn(),
                         exit = fadeOut()
                     ) {
-                        IconButton(onClick = onClearClick) {
+                        IconButton(
+                            modifier = Modifier.testTag(stringResource(id = R.string.clear_input_button)),
+                            onClick = onClearClick
+                        ) {
                             Icon(
                                 imageVector = Icons.Filled.Close,
                                 contentDescription = "Clear"
@@ -131,7 +138,7 @@ fun SearchBar(
             )
         }
     )
-    
+
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }

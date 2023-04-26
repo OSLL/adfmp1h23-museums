@@ -3,7 +3,6 @@ package com.itmo.museum
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeTestRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.itmo.museum.util.SemanticKeys
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
@@ -14,7 +13,6 @@ import org.junit.runner.RunWith
 @RunWith(Enclosed::class)
 class MuseumAppUiTests {
 
-    @RunWith(AndroidJUnit4::class)
     class ReviewTests : AbstractMuseumUiTestWithLogin() {
         @Test
         fun testAddReview(): Unit = composeTestRule.run {
@@ -100,6 +98,131 @@ class MuseumAppUiTests {
         }
     }
 
+    class MuseumSearchTests : AbstractMuseumUiTestWithLogin() {
+        @Test
+        fun testNoSearchResults(): Unit = composeTestRule.run {
+            inputSearchText("some text")
+
+            // make sure no museums are shown
+            onNodeWithTag(context.getString(R.string.museum_list))
+                .assertDoesNotExist()
+
+            // make sure a 'No matches found' message is shown
+            onNodeWithText("No matches found")
+                .assertExists()
+        }
+
+        @Test
+        fun testSearchWithSingleResult(): Unit = composeTestRule.run {
+            val query = "Государственный Эрмитаж"
+            inputSearchText(query)
+
+            onNodeWithTag(context.getString(R.string.museum_list), useUnmergedTree = true)
+                .onChildren()
+                // make sure exactly one result is shown
+                .filterToOne(SemanticsMatcher.keyIsDefined(SemanticKeys.MuseumCard))
+                .assertExists()
+                // make sure this result actually corresponds to the search query
+                .onChildren()
+                .filterToOne(SemanticsMatcher.expectValue(SemanticKeys.MuseumCardName, query))
+                .assertExists()
+        }
+
+        @Test
+        fun testSearchWithMultipleResults(): Unit = composeTestRule.run {
+            val query = "Дворец"
+            inputSearchText(query)
+
+            onNodeWithTag(context.getString(R.string.museum_list))
+                .onChildren()
+                // make sure two results are shown
+                .filter(SemanticsMatcher.keyIsDefined(SemanticKeys.MuseumCard))
+                .assertCountEquals(2)
+        }
+
+        @Test
+        fun testClearSearchInputButton(): Unit = composeTestRule.run {
+            val query = "some text"
+
+            // input some query
+            inputSearchText(query)
+
+            // make sure no results are shown for the query
+            onNodeWithTag(context.getString(R.string.museum_list))
+                .assertDoesNotExist()
+
+            // click on 'clear' button
+            onNodeWithTag(context.getString(R.string.clear_input_button))
+                .performClick()
+
+            // make sure all 10 museums are shown since the input query has been cleared
+            onNodeWithTag(context.getString(R.string.museum_list))
+                .onChildren()
+                .filter(SemanticsMatcher.keyIsDefined(SemanticKeys.MuseumCard))
+                .assertCountEquals(10)
+        }
+    }
+
+    class VisitedPageTests : AbstractMuseumUiTestWithLogin() {
+        @Test
+        fun markSingleMuseumAsVisited(): Unit = composeTestRule.run {
+            val museumName = "Государственный Эрмитаж"
+            markAsVisited(museumName)
+
+            clickBottomBarItem("Visited")
+
+            onNodeWithTag(context.getString(R.string.museum_list), useUnmergedTree = true)
+                .onChildren()
+                // make sure visited page contains only one museum
+                .filterToOne(SemanticsMatcher.keyIsDefined(SemanticKeys.MuseumCard))
+                .assertExists()
+                // make sure this museum is actually the one we marked as visited
+                .onChildren()
+                .filterToOne(SemanticsMatcher.expectValue(SemanticKeys.MuseumCardName, museumName))
+                .assertExists()
+        }
+
+        @Test
+        fun markMultipleMuseumsAsVisited(): Unit = composeTestRule.run {
+            markAsVisited("Музей Фаберже")
+            markAsVisited("Российский этнографический музей")
+
+            clickBottomBarItem("Visited")
+
+            onNodeWithTag(context.getString(R.string.museum_list))
+                .onChildren()
+                // make sure visited page contains two museums
+                .filter(SemanticsMatcher.keyIsDefined(SemanticKeys.MuseumCard))
+                .assertCountEquals(2)
+        }
+
+        private fun ComposeTestRule.markAsVisited(museumName: String) {
+            // find a museum
+            inputSearchText(museumName)
+
+            // go to the museum profile
+            onNodeWithTag(context.getString(R.string.museum_list))
+                .onChildren()
+                // make sure exactly one result is shown
+                .filterToOne(SemanticsMatcher.keyIsDefined(SemanticKeys.MuseumCard))
+                .assertExists()
+                .performClick()
+
+            // click 'mark as visited'
+            onNodeWithTag(context.getString(R.string.mark_as_visited_button))
+                .performClick()
+
+            // get back to museum list page
+            clickBottomBarItem("Museums")
+        }
+
+        private fun ComposeTestRule.clickBottomBarItem(itemName: String) {
+            onAllNodesWithTag(context.getString(R.string.bottom_bar_item))
+                .filterToOne(SemanticsMatcher.expectValue(SemanticKeys.BottomBarItem, itemName))
+                .performClick()
+        }
+    }
+
     class GreetingPageTests : AbstractMuseumUITest() {
         @Test
         fun skipLoginTest(): Unit = composeTestRule.run {
@@ -146,8 +269,7 @@ class MuseumAppUiTests {
         }
 
         private fun ComposeTestRule.postReview(museumName: String, reviewText: String) {
-            onNodeWithTag(context.getString(R.string.museum_search_input))
-                .performTextInput(museumName)
+            inputSearchText(museumName)
 
             onNodeWithTag(context.getString(R.string.museum_list))
                 .onChildren()

@@ -51,7 +51,7 @@ private fun VisitedScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding)
-            .background(Color.Blue),
+            .background(Color.LightGray),
         contentAlignment = Alignment.Center
     ) {
         val visitedMuseums = uiState.visitedMuseums.toList()
@@ -87,7 +87,6 @@ private fun VisitedMuseumsList(
         ) {
             MuseumCardList(
                 onMuseumClick = onMuseumClick,
-                backgroundColor = Color.Blue,
                 museums = visitedMuseums
             )
         }

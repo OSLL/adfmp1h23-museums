@@ -27,8 +27,7 @@ class MuseumSearchViewModel constructor(
         val newMatchedMuseums = when {
             text.isEmpty() -> allMuseums
             else -> allMuseums.filter { museum ->
-                museum.name.contains(text, true) ||
-                        museum.address.contains(text, true)
+                museum.name.contains(text, true)
             }
         }
 

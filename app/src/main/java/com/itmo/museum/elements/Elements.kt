@@ -1,6 +1,7 @@
 package com.itmo.museum.elements
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -11,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -89,26 +91,24 @@ fun MuseumIndexCard(
     val rating by ratingLifecycleAware.collectAsState(initial = Rating())
 
     MuseumTheme {
-        Surface(
-            modifier = modifier.clickable { onClick(museum.name) }
+        Column(modifier = modifier
+            .background(color = Color.White)
+            .padding(all = 8.dp)
+            .clickable { onClick(museum.name) }
         ) {
-            Column(modifier = Modifier
-                .padding(all = 8.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = museum.imageId),
-                    contentDescription = "Museum profile picture",
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = museum.name)
-                Spacer(modifier = Modifier.height(4.dp))
-                FixedRatingBar(rating = rating)
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(text = museum.address)
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(text = museum.info, maxLines = 5)
-            }
+            Image(
+                painter = painterResource(id = museum.imageId),
+                contentDescription = "Museum profile picture",
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = museum.name)
+            Spacer(modifier = Modifier.height(4.dp))
+            FixedRatingBar(rating = rating)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = museum.address)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = museum.info, maxLines = 5)
         }
     }
 }

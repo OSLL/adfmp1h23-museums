@@ -1,0 +1,4 @@
+.DS*
+/.idea
+/local.properties
+/.gradle/

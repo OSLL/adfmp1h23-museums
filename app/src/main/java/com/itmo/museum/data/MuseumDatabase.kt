@@ -40,7 +40,7 @@ abstract class MuseumDatabase : RoomDatabase() {
                 super.onCreate(db)
                 CoroutineScope(Dispatchers.IO).launch {
                     val museumDao = getDatabase(context).museumDao()
-                    MuseumDataProvider.defaultProvider.museums.forEach {
+                    MuseumDataProvider.defaultProvider(context).museums.forEach {
                         museumDao.insert(it)
                     }
                 }

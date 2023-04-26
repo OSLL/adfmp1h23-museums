@@ -7,6 +7,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.itmo.museum.data.MuseumDataProvider
 import com.itmo.museum.elements.MuseumIndexCard
@@ -17,7 +18,7 @@ fun MuseumCardList(
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.LightGray,
     onMuseumClick: (museumId: Int) -> Unit = {},
-    museums: List<Museum> = MuseumDataProvider.defaultProvider.museums,
+    museums: List<Museum> = MuseumDataProvider.defaultProvider(LocalContext.current).museums,
 ) {
     val museumPairs = museums.chunked(2)
     Column(

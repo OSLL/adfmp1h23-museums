@@ -3,4 +3,32 @@
     <string name="user_preferences_file_key">user_preferences</string>
     <string name="username_key">username_key</string>
     <string name="profile_pic_id_key">profile_pic_id_key</string>
+
+    <string name="hermitage_description">
+        Музей, основанный Екатериной Великой, с богатой коллекцией произведений искусства и древностей.
+    </string>
+
+    <string name="rus_museum_description">
+        Музей изобразительных искусств, открытый в 1898 году, с богатой коллекцией русских картин, скульптур и икон.
+    </string>
+
+    <string name="etnographic_museum_description">
+        Российский этнографический музей с более чем 500 000 экспонатов, расположенный в неоклассическом здании 1913 г.
+    </string>
+
+    <string name="faberge_museum_description">
+        В музее собраны изделия, созданные фирмой Карла Фаберже, в том числе пасхальные яйца для императорской семьи.
+    </string>
+
+    <string name="peters_aquatoria_description">
+        Музей – макет Петербурга XVIII века, где есть бинокли и аудиогиды.
+    </string>
+
+    <string name="kunstcamera_description">
+        Музей антропологии и этнографии с археологическими находками из России и других стран мира.
+    </string>
+
+    <string name="leningrad_defence_museum_description">
+        Музей с коллекцией униформ, артиллерии и произведений искусства, посвященный истории блокады Ленинграда.
+    </string>
 </resources>

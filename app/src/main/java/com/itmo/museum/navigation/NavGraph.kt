@@ -125,6 +125,7 @@ private fun Context.rememberUsername(username: String) {
         getSharedPreferences(getString(R.string.user_preferences_file_key), Context.MODE_PRIVATE)
     with(preferences.edit()) {
         putString(getString(R.string.username_key), username)
+        apply()
     }
 }
 

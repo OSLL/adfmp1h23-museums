@@ -62,13 +62,13 @@
     <string name="about_page_content">
         This app allows a user to search through the many museums of Saint Petersburg.
         Each museum has its own profile where one can find some useful info about a museum
-        along with reviews from other users.
+        along with reviews from other users.\n\n
 
         If you find a certain museum interesting, you can request a route to it on the map
-        so that you can visit it yourself.
+        so that you can visit it yourself.\n\n
 
         A user can also mark the museums they have already visited. Such museums can be found
-        on the \'Visited\' page of the app.
+        on the \'Visited\' page of the app.\n\n
 
         Authors: Arsen Nagdalian and Anton Sudov
     </string>

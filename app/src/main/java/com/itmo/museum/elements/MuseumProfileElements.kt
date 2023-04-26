@@ -36,7 +36,7 @@ internal fun MuseumCard(
     val museumImageId = uiState.museumDetails.imageId
 
     fun shareMuseumInfo() {
-        val message = "Check out the $museumName at $museumAddress"
+        val message = "Я собираюсь посетить $museumName по адресу $museumAddress"
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, message)
@@ -81,7 +81,8 @@ internal fun MuseumCard(
                     horizontalAlignment = Alignment.End
                 ) {
                     Button(
-                        onClick = ::shareMuseumInfo,
+                        enabled = uiState.shareButtonState == ShareButtonState.ENABLED,
+                        onClick = { shareMuseumInfo() },
                     ) {
                         Text("Share")
                     }

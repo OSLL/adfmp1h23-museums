@@ -180,11 +180,17 @@ class MuseumProfileViewModel(
         reviews,
         museumDetails,
     ) { reviews, museumDetails ->
+        val shareButtonState =
+            if (museumDetails.name.isNotEmpty())
+                ShareButtonState.ENABLED
+            else
+                ShareButtonState.DISABLED
         MuseumProfileUiState(
             user = username?.let { User(name = it) } ?: UserDetails.Anonymous,
             reviews = reviews,
             rating = reviews.rating,
-            museumDetails = museumDetails
+            museumDetails = museumDetails,
+            shareButtonState = shareButtonState
         )
     }.stateIn(
         scope = viewModelScope,
@@ -211,13 +217,19 @@ data class MuseumProfileUiState(
     val user: User,
     val reviews: List<UserReviewDetails> = emptyList(),
     val rating: Rating = Rating(),
-    val museumDetails: MuseumDetails = MuseumDetails()
+    val museumDetails: MuseumDetails = MuseumDetails(),
+    val shareButtonState: ShareButtonState = ShareButtonState.DISABLED
 )
 
 enum class IsReviewedState {
     UNKNOWN,
     IS_NOT_REVIEWED,
     IS_REVIEWED
+}
+
+enum class ShareButtonState {
+    DISABLED,
+    ENABLED
 }
 
 class MapViewModel : ViewModel() {
@@ -247,12 +259,12 @@ object AppViewModelProvider {
             val savedStateHandle = this.createSavedStateHandle()
             val museumId: Int =
                 checkNotNull(savedStateHandle[MuseumAppScreen.WithArgs.MuseumProfile.museumIdArg])
-                MuseumProfileViewModel(
-                    museumApplication().applicationContext.getUsername(),
-                    museumId,
-                    museumApplication().container.museumRepository,
-                    museumApplication().container.reviewRepository
-                )
+            MuseumProfileViewModel(
+                museumApplication().applicationContext.getUsername(),
+                museumId,
+                museumApplication().container.museumRepository,
+                museumApplication().container.reviewRepository
+            )
         }
         initializer {
             MuseumSearchViewModel(
